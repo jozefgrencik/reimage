@@ -1,0 +1,51 @@
+{
+    "name": "jozefgrencik/reimage",
+    "type": "library",
+    "version": "0.1",
+    "description": "Create modified images from original image on the fly",
+    "keywords": [
+        "PHP",
+        "image",
+        "resize",
+        "scale",
+        "crop",
+        "cache",
+        "on fly"
+    ],
+    "homepage": "https://github.com/jozefgrencik/reimage",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jozef Grenčík"
+        }
+    ],
+    "require": {
+        "php": ">=7.3"
+    },
+    "require-dev": {
+        "intervention/image": "2.5.*",
+        "phpstan/phpstan": "0.12.*",
+        "phpunit/phpunit": "^9.3"
+    },
+    "suggest": {
+        "intervention/image": "Image manipulation library"
+    },
+    "autoload": {
+        "psr-4": {
+            "Reimage\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Reimage\\Test\\": "tests/"
+        }
+    },
+    "scripts": {
+        "check": [
+            "@test",
+            "@phpstan"
+        ],
+        "test": "phpunit --colors=always",
+        "phpstan": "phpstan analyse -c phpstan.neon src/"
+    }
+}
