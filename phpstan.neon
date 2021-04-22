@@ -1,0 +1,6 @@
+services:
+parameters:
+    level: max
+    inferPrivatePropertyTypeFromConstructor: true
+    bootstrapFiles:
+        - tests/bootstrap.php
