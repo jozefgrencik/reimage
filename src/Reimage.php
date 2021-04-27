@@ -30,13 +30,13 @@ class Reimage
     {
         $fullParams = $this->computeAllParams($rawParams);
 
-        $cacheFile = $this->generateFileName($sourcePath, $fullParams);
+        $publicPath = $this->generatePublicPath($sourcePath, $fullParams);
 
         $query = $rawParams + [
-                self::SIGN => $this->generateSignature($cacheFile, $fullParams),
+                self::SIGN => $this->generateSignature($publicPath, $fullParams),
             ];
 
-        return $cacheFile . '?' . http_build_query($query);
+        return $publicPath . '?' . http_build_query($query);
     }
 
     /**
@@ -57,42 +57,42 @@ class Reimage
     }
 
     /**
-     * @param string $relativePath
+     * @param string $sourcePath
      * @param array<string,string|int> $params
      * @return string
      * @throws \Exception
      */
-    private function generateFileName(string $relativePath, array $params): string
+    private function generatePublicPath(string $sourcePath, array $params): string
     {
         unset($params[self::SIGN]);
         ksort($params);
 
         $mapper = $this->getMapper();
-        $publicPath = $mapper->remapSourceToPublic($relativePath);
+        $publicPath = $mapper->remapSourceToPublic($sourcePath);
 
-        $hashedPart = $this->generateFileHash($relativePath, $params);
+        $hashedPart = $this->generateFileHash($sourcePath, $params);
 
-        $ext = pathinfo($relativePath, PATHINFO_EXTENSION);
-        $newPath = preg_replace('/(\.' . preg_quote($ext, '/') . ')$/', '_' . $hashedPart . '.' . $ext, $publicPath, 1);
+        $ext = pathinfo($sourcePath, PATHINFO_EXTENSION);
+        $newPublicPath = preg_replace('/(\.' . preg_quote($ext, '/') . ')$/', '_' . $hashedPart . '.' . $ext, $publicPath, 1);
 
-        if ($newPath === null) {
+        if ($newPublicPath === null) {
             throw new \Exception('preg_replace error occurred');
         }
 
-        return $newPath;
+        return $newPublicPath;
     }
 
     /**
-     * @param string $path
+     * @param string $sourcePath
      * @param array<string,string|int> $params
      * @return string
      */
-    private function generateSignature(string $path, array $params): string
+    private function generateSignature(string $sourcePath, array $params): string
     {
         unset($params[self::SIGN]);
         ksort($params);
 
-        return md5(self::CDN_IMAGE_SECRET . '|' . ltrim($path, '/') . '|' . http_build_query($params));
+        return md5(self::CDN_IMAGE_SECRET . '|' . ltrim($sourcePath, '/') . '|' . http_build_query($params));
     }
 
     /**
@@ -115,5 +115,42 @@ class Reimage
                 'public' => '/cdn',
             ],
         ]);
+    }
+
+    /**
+     * @param string $publicPath
+     * @param array<string,string|int> $queryParams
+     * @return bool
+     */
+    public function createImage(string $publicPath, array $queryParams): bool
+    {
+        if ($this->isValidSignature($publicPath, $queryParams)) {
+            //create image ..
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $publicPath
+     * @param array<string,string|int> $params
+     * @return bool
+     */
+    private function isValidSignature(string $publicPath, array $params): bool
+    {
+        $sign = $params[self::SIGN] ?? null;
+        if (empty($sign)) {
+            return false;
+        }
+
+        unset($params[self::SIGN]);
+        // sort?
+        // clean?
+
+        $expectedSign = $this->generateSignature($publicPath, $params);
+
+        return $sign === $expectedSign;
     }
 }
