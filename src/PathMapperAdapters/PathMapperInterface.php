@@ -5,6 +5,9 @@ namespace Reimage\PathMapperAdapters;
 
 interface PathMapperInterface
 {
+    /**
+     * @param array<array<string,string>> $options
+     */
     public function __construct(array $options);
 
     public function remapSourceToPublic(string $path): string;
