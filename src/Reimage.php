@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Reimage;
 
+use Reimage\Exceptions\ReimageException;
 use Reimage\PathMapperAdapters\BasicMapper;
 use Reimage\PathMapperAdapters\PathMapperInterface;
 
@@ -25,6 +26,7 @@ class Reimage
      * @param string $sourcePath
      * @param array<string,string|int> $rawParams
      * @return string
+     * @throws ReimageException
      */
     function createUrl(string $sourcePath, array $rawParams): string
     {
@@ -60,7 +62,7 @@ class Reimage
      * @param string $sourcePath
      * @param array<string,string|int> $params
      * @return string
-     * @throws \Exception
+     * @throws ReimageException
      */
     private function generatePublicPath(string $sourcePath, array $params): string
     {
@@ -76,7 +78,7 @@ class Reimage
         $newPublicPath = preg_replace('/(\.' . preg_quote($ext, '/') . ')$/', '_' . $hashedPart . '.' . $ext, $publicPath, 1);
 
         if ($newPublicPath === null) {
-            throw new \Exception('preg_replace error occurred');
+            throw new ReimageException('preg_replace error occurred');
         }
 
         return $newPublicPath;
