@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Reimage;
 
 use Reimage\Exceptions\ReimageException;
+use Reimage\ImageAdapters\ImageInterface;
+use Reimage\ImageAdapters\Intervention;
 use Reimage\PathMapperAdapters\BasicMapper;
 use Reimage\PathMapperAdapters\PathMapperInterface;
 
@@ -30,6 +32,8 @@ class Reimage
      */
     function createUrl(string $sourcePath, array $rawParams): string
     {
+        $sourcePath = Utils::unifyPath($sourcePath);
+
         $fullParams = $this->computeAllParams($rawParams);
 
         $publicPath = $this->generatePublicPath($sourcePath, $fullParams);
@@ -84,6 +88,20 @@ class Reimage
         return $newPublicPath;
     }
 
+    private function generateSourcePath(string $publicPath): string
+    {
+        $ext = pathinfo($publicPath, PATHINFO_EXTENSION);
+        $publicWithoutHash = preg_replace('/_[a-f0-9]{' . self::HASH_LENGHT . '}\.' . preg_quote($ext, '/') . '/', '.' . $ext, $publicPath);
+        if ($publicWithoutHash === null) {
+            throw new ReimageException('preg_replace error occurred');
+        }
+
+        $mapper = $this->getMapper();
+        $sourcePath = $mapper->remapPublicToSource($publicWithoutHash);
+
+        return $sourcePath;
+    }
+
     /**
      * @param string $sourcePath
      * @param array<string,string|int> $params
@@ -110,10 +128,12 @@ class Reimage
 
     private function getMapper(): PathMapperInterface
     {
+        $testDir = dirname(__FILE__, 2) . '/tests';
+
         return new BasicMapper([
             [
-                'source' => '/files',
-                'cache' => '/webroot/cdn',
+                'source' => $testDir . '/TestImages',
+                'cache' => $testDir . '/Temp',
                 'public' => '/cdn',
             ],
         ]);
@@ -123,16 +143,19 @@ class Reimage
      * @param string $publicPath
      * @param array<string,string|int> $queryParams
      * @return bool
+     * @throws ReimageException
      */
     public function createImage(string $publicPath, array $queryParams): bool
     {
-        if ($this->isValidSignature($publicPath, $queryParams)) {
-            //create image ..
-
-            return true;
+        if (!$this->isValidSignature($publicPath, $queryParams)) {
+            throw new ReimageException('Invalid signature');
         }
 
-        return false;
+        $sourcePath = $this->generateSourcePath($publicPath);
+        $image = $this->doImageCommands($sourcePath, $queryParams);
+        // save
+
+        return true;
     }
 
     /**
@@ -154,5 +177,35 @@ class Reimage
         $expectedSign = $this->generateSignature($publicPath, $params);
 
         return $sign === $expectedSign;
+    }
+
+    /**
+     * @param string $fullPath
+     * @param array<string,string|int> $params
+     * @return ImageInterface
+     */
+    private function doImageCommands(string $fullPath, array $params): ImageInterface
+    {
+        $imageClass = $this->getImageAdapter();
+        $imageClass->loadImage($fullPath);
+
+        $width = $params[self::WIDTH] ?? null;
+        $height = $params[self::HEIGHT] ?? null;
+        if ($width || $height) {
+            $width = $width !== null ? (int)$width : null;
+            $height = $height !== null ? (int)$height : null;
+
+            $imageClass->resize($width, $height);
+        }
+
+        //todo more operations
+
+        return $imageClass;
+    }
+
+
+    private function getImageAdapter(): ImageInterface
+    {
+        return new Intervention();
     }
 }

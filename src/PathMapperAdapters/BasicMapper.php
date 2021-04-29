@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Reimage\PathMapperAdapters;
 
+use Reimage\Utils;
+
 class BasicMapper implements PathMapperInterface
 {
     /** @var array<array<string,string>> */
@@ -18,7 +20,13 @@ class BasicMapper implements PathMapperInterface
          * cache (destination)
          * public
          */
-        $this->options = $options;
+        $this->options = array_map(function (array $option) {
+            return [
+                'source' => Utils::unifyPath($option['source'] ?? ''),
+                'cache' => Utils::unifyPath($option['cache'] ?? ''),
+                'public' => Utils::unifyPath($option['public'] ?? ''),
+            ];
+        }, $options);
     }
 
     public function remapSourceToPublic(string $path): string
