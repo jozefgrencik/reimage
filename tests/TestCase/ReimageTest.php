@@ -11,13 +11,8 @@ class ReimageTest extends TestCase
 {
     public function testCreateUrl(): void
     {
-        $testDir = dirname(__DIR__) . '/TestImages';
-
-        $url = (new Reimage())->createUrl($testDir . '/my_originals/iStock_000009041558XLarge.jpg', [Reimage::WIDTH => 300, Reimage::HEIGHT => 200]);
-        $this->assertSame('/cdn/my_originals/iStock_000009041558XLarge_cae2cc.jpg?w=300&h=200&s=79446f760773d23c7ee839f27f3ddee6', $url);
-
-        $url = (new Reimage())->createUrl($testDir . '/IMG_20190816_142144.jpg', [Reimage::WIDTH => 300, Reimage::HEIGHT => 200]);
-        $this->assertSame('/cdn/IMG_20190816_142144_732e07.jpg?w=300&h=200&s=238fceb849e52255c41183b8d98e4c68', $url);
+        $url = (new Reimage())->createUrl('/my_originals/iStock_000009041558XLarge.jpg', [Reimage::WIDTH => 300, Reimage::HEIGHT => 200]);
+        $this->assertSame('/my_originals/iStock_000009041558XLarge_6b5016.jpg?w=300&h=200&s=73545fcfc8e7c6ef9c6495695be4bed4', $url);
     }
 
     public function testCreateImageWrongHash(): void
@@ -32,10 +27,17 @@ class ReimageTest extends TestCase
 
     public function testCreateImage(): void
     {
-        $result = (new Reimage())->createImage(
-            '/cdn/IMG_20190816_142144_732e07.jpg',
-            ['w' => 300, 'h' => 200, 's' => '238fceb849e52255c41183b8d98e4c68']
-        );
+        $testDir = dirname(__DIR__) . '/TestImages';
+
+        $url = (new Reimage())->createUrl($testDir . '/IMG_20190816_142144.jpg', [Reimage::WIDTH => 300, Reimage::HEIGHT => 200]);
+        /** @var array<string,string> $parsedUrl */
+        $parsedUrl = parse_url($url);
+        parse_str($parsedUrl['query'], $parsedQuery);
+
+        $this->assertSame('/cdn/IMG_20190816_142144_b35ccb.jpg', $parsedUrl['path']);
+        $this->assertSame(['w' => '300', 'h' => '200', 's' => 'ca88ef146a1bdda836bfdf24cd16cc0a'], $parsedQuery);
+
+        $result = (new Reimage())->createImage($parsedUrl['path'], $parsedQuery);
 
         $this->assertSame(true, $result);
     }

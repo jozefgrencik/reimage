@@ -70,9 +70,6 @@ class Reimage
      */
     private function generatePublicPath(string $sourcePath, array $params): string
     {
-        unset($params[self::SIGN]);
-        ksort($params);
-
         $mapper = $this->getMapper();
         $publicPath = $mapper->remapSourceToPublic($sourcePath);
 
@@ -112,7 +109,7 @@ class Reimage
         unset($params[self::SIGN]);
         ksort($params);
 
-        return md5(self::CDN_IMAGE_SECRET . '|' . ltrim($sourcePath, '/') . '|' . http_build_query($params));
+        return md5(self::CDN_IMAGE_SECRET . '|' . basename($sourcePath) . '|' . http_build_query($params));
     }
 
     /**
@@ -122,7 +119,10 @@ class Reimage
      */
     private function generateFileHash(string $path, array $params): string
     {
-        $stringToHash = ltrim($path, '/') . http_build_query($params);
+        unset($params[self::SIGN]);
+        ksort($params);
+
+        $stringToHash = basename($path) . http_build_query($params);
         return substr(md5($stringToHash), 0, self::HASH_LENGHT);
     }
 
