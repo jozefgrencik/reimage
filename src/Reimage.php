@@ -151,10 +151,10 @@ class Reimage
     /**
      * @param string $publicPath
      * @param array<string,string|int> $queryParams
-     * @return bool
+     * @return string
      * @throws ReimageException
      */
-    public function createImage(string $publicPath, array $queryParams): bool
+    public function createImage(string $publicPath, array $queryParams): string
     {
         if (!$this->isValidSignature($publicPath, $queryParams)) {
             throw new ReimageException('Invalid signature');
@@ -166,7 +166,7 @@ class Reimage
         $image = $this->doImageCommands($sourcePath, $queryParams);
         $this->getFileSystemAdapter()->saveContent($cachePath, $image->getImageString());
 
-        return true;
+        return $cachePath;
     }
 
     /**

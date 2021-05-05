@@ -36,8 +36,7 @@ class ReimageTest extends TestCase
         $this->assertSame('/cdn/IMG_20190816_142144_b35ccb.jpg', $parsedUrl['path']);
         $this->assertSame(['w' => '300', 'h' => '200', 's' => 'ca88ef146a1bdda836bfdf24cd16cc0a'], $parsedUrl['query_array']);
 
-        $result = (new Reimage())->createImage($parsedUrl['path'], $parsedUrl['query_array']);
-
-        $this->assertSame(true, $result);
+        $cachePath = (new Reimage())->createImage($parsedUrl['path'], $parsedUrl['query_array']);
+        $this->assertFileExists($cachePath);
     }
 }
