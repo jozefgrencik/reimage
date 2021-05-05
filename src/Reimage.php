@@ -101,17 +101,11 @@ class Reimage
         return $sourcePath;
     }
 
-    private function generateCachePath(string $publicPath):string
+    private function generateCachePath(string $publicPath): string
     {
-        $ext = pathinfo($publicPath, PATHINFO_EXTENSION);
-        $publicWithoutHash = preg_replace('/_[a-f0-9]{' . self::HASH_LENGHT . '}\.' . preg_quote($ext, '/') . '/', '.' . $ext, $publicPath);
-        if ($publicWithoutHash === null) {
-            throw new ReimageException('preg_replace error occurred');
-        }
-
         $mapper = $this->getMapperAdapter();
 
-        return $mapper->remapPublicToCache($publicWithoutHash);
+        return $mapper->remapPublicToCache($publicPath);
     }
 
     /**
