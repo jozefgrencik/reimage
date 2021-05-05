@@ -72,7 +72,7 @@ class Reimage
      */
     private function generatePublicPath(string $sourcePath, array $params): string
     {
-        $mapper = $this->getMapper();
+        $mapper = $this->getMapperAdapter();
         $publicPath = $mapper->remapSourceToPublic($sourcePath);
 
         $hashedPart = $this->generateFileHash($sourcePath, $params);
@@ -95,7 +95,7 @@ class Reimage
             throw new ReimageException('preg_replace error occurred');
         }
 
-        $mapper = $this->getMapper();
+        $mapper = $this->getMapperAdapter();
         $sourcePath = $mapper->remapPublicToSource($publicWithoutHash);
 
         return $sourcePath;
@@ -109,7 +109,7 @@ class Reimage
             throw new ReimageException('preg_replace error occurred');
         }
 
-        $mapper = $this->getMapper();
+        $mapper = $this->getMapperAdapter();
 
         return $mapper->remapPublicToCache($publicWithoutHash);
     }
@@ -141,7 +141,7 @@ class Reimage
         return substr(md5($stringToHash), 0, self::HASH_LENGHT);
     }
 
-    private function getMapper(): PathMapperInterface
+    private function getMapperAdapter(): PathMapperInterface
     {
         $testDir = dirname(__FILE__, 2) . '/tests';
 
