@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Reimage;
 
 use Reimage\Exceptions\ReimageException;
+use Reimage\FileSystemAdapters\FileSystemInterface;
+use Reimage\FileSystemAdapters\Local;
 use Reimage\ImageAdapters\ImageInterface;
 use Reimage\ImageAdapters\Intervention;
 use Reimage\PathMapperAdapters\BasicMapper;
@@ -99,6 +101,19 @@ class Reimage
         return $sourcePath;
     }
 
+    private function generateCachePath(string $publicPath):string
+    {
+        $ext = pathinfo($publicPath, PATHINFO_EXTENSION);
+        $publicWithoutHash = preg_replace('/_[a-f0-9]{' . self::HASH_LENGHT . '}\.' . preg_quote($ext, '/') . '/', '.' . $ext, $publicPath);
+        if ($publicWithoutHash === null) {
+            throw new ReimageException('preg_replace error occurred');
+        }
+
+        $mapper = $this->getMapper();
+
+        return $mapper->remapPublicToCache($publicWithoutHash);
+    }
+
     /**
      * @param string $sourcePath
      * @param array<string,string|int> $params
@@ -152,8 +167,10 @@ class Reimage
         }
 
         $sourcePath = $this->generateSourcePath($publicPath);
+        $cachePath = $this->generateCachePath($publicPath);
+
         $image = $this->doImageCommands($sourcePath, $queryParams);
-        // save
+        $this->getFileSystemAdapter()->saveContent($cachePath, $image->getImageString());
 
         return true;
     }
@@ -207,5 +224,10 @@ class Reimage
     private function getImageAdapter(): ImageInterface
     {
         return new Intervention();
+    }
+
+    private function getFileSystemAdapter(): FileSystemInterface
+    {
+        return new Local();
     }
 }

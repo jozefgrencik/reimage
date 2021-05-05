@@ -9,5 +9,12 @@ interface ImageInterface
 
     public function loadImage(string $realPath): void;
 
+    /**
+     * @return mixed
+     */
+    public function getImageObject();
+
+    public function getImageString(): string;
+
     public function resize(?int $width = null, ?int $height = null): void;
 }

@@ -21,6 +21,16 @@ class Intervention implements ImageInterface
         $this->imageObject = \Intervention\Image\ImageManagerStatic::make($realPath);
     }
 
+    public function getImageObject(): Image
+    {
+        return $this->imageObject;
+    }
+
+    public function getImageString(): string
+    {
+        return $this->imageObject->stream()->getContents();
+    }
+
     public function resize(?int $width = null, ?int $height = null): void
     {
         $this->imageObject->resize($width, $height, function ($constraint) {
