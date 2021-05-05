@@ -6,6 +6,7 @@ namespace Reimage\Test\TestCase;
 use PHPUnit\Framework\TestCase;
 use Reimage\Exceptions\ReimageException;
 use Reimage\Reimage;
+use Reimage\Utils;
 
 class ReimageTest extends TestCase
 {
@@ -30,14 +31,12 @@ class ReimageTest extends TestCase
         $testDir = dirname(__DIR__) . '/TestImages';
 
         $url = (new Reimage())->createUrl($testDir . '/IMG_20190816_142144.jpg', [Reimage::WIDTH => 300, Reimage::HEIGHT => 200]);
-        /** @var array<string,string> $parsedUrl */
-        $parsedUrl = parse_url($url);
-        parse_str($parsedUrl['query'], $parsedQuery);
+        $parsedUrl = Utils::parseUrl($url);
 
         $this->assertSame('/cdn/IMG_20190816_142144_b35ccb.jpg', $parsedUrl['path']);
-        $this->assertSame(['w' => '300', 'h' => '200', 's' => 'ca88ef146a1bdda836bfdf24cd16cc0a'], $parsedQuery);
+        $this->assertSame(['w' => '300', 'h' => '200', 's' => 'ca88ef146a1bdda836bfdf24cd16cc0a'], $parsedUrl['query_array']);
 
-        $result = (new Reimage())->createImage($parsedUrl['path'], $parsedQuery);
+        $result = (new Reimage())->createImage($parsedUrl['path'], $parsedUrl['query_array']);
 
         $this->assertSame(true, $result);
     }
