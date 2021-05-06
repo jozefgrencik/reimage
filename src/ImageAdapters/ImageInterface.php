@@ -17,4 +17,10 @@ interface ImageInterface
     public function getImageString(): string;
 
     public function resize(?int $width = null, ?int $height = null): void;
+
+    /**
+     * Rotate the image counter-clockwise by a given angle.
+     * @param float $angle
+     */
+    public function rotate(float $angle): void;
 }

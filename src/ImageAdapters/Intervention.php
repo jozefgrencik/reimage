@@ -37,4 +37,9 @@ class Intervention implements ImageInterface
             $constraint->aspectRatio();
         });
     }
+
+    public function rotate(float $angle): void
+    {
+        $this->imageObject->rotate($angle);
+    }
 }

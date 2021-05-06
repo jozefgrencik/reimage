@@ -22,7 +22,7 @@ class ReimageTest extends TestCase
 
         $result = (new Reimage())->createImage(
             '/my_originals/iStock_000009041558XLarge_5ec492.jpg',
-            ['w' => 300, 'h' => 200, 's' => 'a1ff6fc471f06863589d080aee4468e7']
+            ['w' => '300', 'h' => '200', 's' => 'a1ff6fc471f06863589d080aee4468e7']
         );
     }
 
@@ -35,6 +35,20 @@ class ReimageTest extends TestCase
 
         $this->assertSame('/cdn/IMG_20190816_142144_b35ccb.jpg', $parsedUrl['path']);
         $this->assertSame(['w' => '300', 'h' => '200', 's' => 'ca88ef146a1bdda836bfdf24cd16cc0a'], $parsedUrl['query_array']);
+
+        $cachePath = (new Reimage())->createImage($parsedUrl['path'], $parsedUrl['query_array']);
+        $this->assertFileExists($cachePath);
+    }
+
+    public function testCreateImageRotate(): void
+    {
+        $testDir = dirname(__DIR__) . '/TestImages';
+
+        $url = (new Reimage())->createUrl($testDir . '/IMG_20190816_142144.jpg', [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::ROTATE => 90]);
+        $parsedUrl = Utils::parseUrl($url);
+
+        $this->assertSame('/cdn/IMG_20190816_142144_4569a5.jpg', $parsedUrl['path']);
+        $this->assertSame(['w' => '300', 'h' => '200', 'r' => '90', 's' => 'fd698869eb23db8efa808101c1674737'], $parsedUrl['query_array']);
 
         $cachePath = (new Reimage())->createImage($parsedUrl['path'], $parsedUrl['query_array']);
         $this->assertFileExists($cachePath);

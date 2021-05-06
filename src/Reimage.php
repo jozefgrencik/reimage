@@ -16,11 +16,23 @@ class Reimage
     public const WIDTH = 'w';
     public const HEIGHT = 'h';
     public const SIGN = 's';
+    public const QUALITY = 'q';
+    public const BACKGROUND_COLOR = 'bc';
+    public const FOCUS_X = 'fx';
+    public const FOCUS_Y = 'fy';
+    public const ROTATE = 'r';
+    public const PROFILE = 'p';
 
     private const ALL_PARAMS = [
         self::WIDTH,
         self::HEIGHT,
         self::SIGN,
+        self::QUALITY,
+        self::BACKGROUND_COLOR,
+        self::FOCUS_X,
+        self::FOCUS_Y,
+        self::ROTATE,
+        self::PROFILE,
     ];
 
     private const HASH_LENGHT = 6;
@@ -150,7 +162,7 @@ class Reimage
 
     /**
      * @param string $publicPath
-     * @param array<string,string|int> $queryParams
+     * @param array<string,string> $queryParams
      * @return string
      * @throws ReimageException
      */
@@ -192,7 +204,7 @@ class Reimage
 
     /**
      * @param string $fullPath
-     * @param array<string,string|int> $params
+     * @param array<string,string> $params
      * @return ImageInterface
      */
     private function doImageCommands(string $fullPath, array $params): ImageInterface
@@ -207,6 +219,11 @@ class Reimage
             $height = $height !== null ? (int)$height : null;
 
             $imageClass->resize($width, $height);
+        }
+
+        $rotationAngle = $params[self::ROTATE] ?? null;
+        if ($rotationAngle !== null) {
+            $imageClass->rotate((float)$rotationAngle);
         }
 
         //todo more operations
