@@ -7,9 +7,6 @@ use Reimage\Exceptions\ReimageException;
 use Reimage\FileSystemAdapters\FileSystemInterface;
 use Reimage\FileSystemAdapters\Local;
 use Reimage\ImageAdapters\ImageInterface;
-use Reimage\ImageAdapters\Intervention;
-use Reimage\PathMapperAdapters\BasicMapper;
-use Reimage\PathMapperAdapters\PathMapperInterface;
 
 class Reimage
 {
@@ -37,6 +34,25 @@ class Reimage
 
     private const HASH_LENGHT = 6;
     private const CDN_IMAGE_SECRET = '1234';
+
+    /** @var Config */
+    private $config;
+
+    /**
+     * Reimage constructor.
+     * @param Config|array<string,mixed>|null $config
+     */
+    public function __construct($config = null)
+    {
+        if ($config instanceof Config) {
+            $this->config = $config;
+        } elseif (is_array($config)) {
+            $this->config = new Config($config);
+        } else {
+            $this->config = new Config();
+        }
+    }
+
 
     /**
      * @param string $sourcePath
@@ -84,7 +100,7 @@ class Reimage
      */
     private function generatePublicPath(string $sourcePath, array $params): string
     {
-        $mapper = $this->getMapperAdapter();
+        $mapper = $this->config->getPathMapper();
         $publicPath = $mapper->remapSourceToPublic($sourcePath);
 
         $hashedPart = $this->generateFileHash($sourcePath, $params);
@@ -99,6 +115,9 @@ class Reimage
         return $newPublicPath;
     }
 
+    /**
+     * @throws ReimageException
+     */
     private function generateSourcePath(string $publicPath): string
     {
         $ext = pathinfo($publicPath, PATHINFO_EXTENSION);
@@ -107,15 +126,18 @@ class Reimage
             throw new ReimageException('preg_replace error occurred');
         }
 
-        $mapper = $this->getMapperAdapter();
+        $mapper = $this->config->getPathMapper();
         $sourcePath = $mapper->remapPublicToSource($publicWithoutHash);
 
         return $sourcePath;
     }
 
+    /**
+     * @throws ReimageException
+     */
     private function generateCachePath(string $publicPath): string
     {
-        $mapper = $this->getMapperAdapter();
+        $mapper = $this->config->getPathMapper();
 
         return $mapper->remapPublicToCache($publicPath);
     }
@@ -145,19 +167,6 @@ class Reimage
 
         $stringToHash = basename($path) . http_build_query($params);
         return substr(md5($stringToHash), 0, self::HASH_LENGHT);
-    }
-
-    private function getMapperAdapter(): PathMapperInterface
-    {
-        $testDir = dirname(__FILE__, 2) . '/tests';
-
-        return new BasicMapper([
-            [
-                'source' => $testDir . '/TestImages',
-                'cache' => $testDir . '/Temp',
-                'public' => '/cdn',
-            ],
-        ]);
     }
 
     /**
@@ -206,10 +215,11 @@ class Reimage
      * @param string $fullPath
      * @param array<string,string> $params
      * @return ImageInterface
+     * @throws ReimageException
      */
     private function doImageCommands(string $fullPath, array $params): ImageInterface
     {
-        $imageClass = $this->getImageAdapter();
+        $imageClass = $this->config->getImageAdapter();
         $imageClass->loadImage($fullPath);
 
         $width = $params[self::WIDTH] ?? null;
@@ -229,12 +239,6 @@ class Reimage
         //todo more operations
 
         return $imageClass;
-    }
-
-
-    private function getImageAdapter(): ImageInterface
-    {
-        return new Intervention();
     }
 
     private function getFileSystemAdapter(): FileSystemInterface

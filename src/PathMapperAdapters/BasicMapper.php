@@ -3,15 +3,16 @@ declare(strict_types=1);
 
 namespace Reimage\PathMapperAdapters;
 
+use Reimage\FileSystemAdapters\Local;
 use Reimage\Utils;
 
 class BasicMapper implements PathMapperInterface
 {
-    /** @var array<array<string,string>> */
+    /** @var array<array<string,mixed>> */
     private $options;
 
     /**
-     * @param array<array<string,string>> $options
+     * @param array<array<string,mixed>> $options
      */
     public function __construct(array $options)
     {
@@ -19,12 +20,14 @@ class BasicMapper implements PathMapperInterface
          * source
          * cache (destination)
          * public
+         * filesystem
          */
         $this->options = array_map(function (array $option) {
             return [
                 'source' => Utils::unifyPath($option['source'] ?? ''),
                 'cache' => Utils::unifyPath($option['cache'] ?? ''),
                 'public' => Utils::unifyPath($option['public'] ?? ''),
+                'filesystem' => new Local(),
             ];
         }, $options);
     }

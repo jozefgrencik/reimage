@@ -6,7 +6,7 @@ namespace Reimage\PathMapperAdapters;
 interface PathMapperInterface
 {
     /**
-     * @param array<array<string,string>> $options
+     * @param array<array<string,mixed>> $options
      */
     public function __construct(array $options);
 
