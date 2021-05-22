@@ -9,6 +9,7 @@ use Reimage\Exceptions\ReimageException;
 use Reimage\PathMapperAdapters\BasicMapper;
 use Reimage\Reimage;
 use Reimage\Utils;
+use SebastianBergmann\FileIterator\Facade;
 
 class ReimageTest extends TestCase
 {
@@ -18,6 +19,9 @@ class ReimageTest extends TestCase
     public function setUp(): void
     {
         $testDir = dirname(__FILE__, 3) . '/tests';
+
+        $this->cleanTempFolder($testDir . '/Temp');
+
         $pathMapper = new BasicMapper([
             [
                 'source' => $testDir . '/TestImages',
@@ -31,6 +35,13 @@ class ReimageTest extends TestCase
         $this->reimage = new Reimage($config);
     }
 
+    private function cleanTempFolder(string $folder): void
+    {
+        $files = (new Facade)->getFilesAsArray($folder, ['.jpg', '.png']);
+        foreach ($files as $file) {
+            unlink($file);
+        }
+    }
 
     public function testCreateUrl(): void
     {
