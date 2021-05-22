@@ -66,4 +66,9 @@ class Imagine implements ReimageImageInterface
     {
         $this->imageObject->effects()->blur($amount);
     }
+
+    public function negative(): void
+    {
+        $this->imageObject->effects()->negative();
+    }
 }

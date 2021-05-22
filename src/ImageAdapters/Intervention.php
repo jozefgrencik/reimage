@@ -55,4 +55,9 @@ class Intervention implements ImageInterface
     {
         $this->imageObject->blur($amount);
     }
+
+    public function negative(): void
+    {
+        $this->imageObject->invert();
+    }
 }

@@ -104,4 +104,16 @@ class ReimageTest extends TestCase
         $cachePath = $this->reimage->createImage($parsedUrl['path'], $parsedUrl['query_array']);
         $this->assertFileExists($cachePath);
     }
+
+    public function testCreateImageNegative(): void
+    {
+        $url = $this->reimage->createUrl(TEST_IMG1, [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::NEGATIVE => 1]);
+        $parsedUrl = Utils::parseUrl($url);
+
+        $this->assertSame('/cdn/IMG_20190816_142144_8b839f.jpg', $parsedUrl['path']);
+        $this->assertSame(['w' => '300', 'h' => '200', 'neg' => '1', 's' => 'ab019f58b41a5bdd091fe2e8aefdf0f8'], $parsedUrl['query_array']);
+
+        $cachePath = $this->reimage->createImage($parsedUrl['path'], $parsedUrl['query_array']);
+        $this->assertFileExists($cachePath);
+    }
 }

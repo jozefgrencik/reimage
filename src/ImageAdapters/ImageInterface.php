@@ -27,4 +27,6 @@ interface ImageInterface
     public function greyscale(): void;
 
     public function blur(int $amount): void;
+
+    public function negative(): void;
 }

@@ -21,6 +21,7 @@ class Reimage
     public const PROFILE = 'p';
     public const GREYSCALE = 'grey';
     public const BLUR = 'blur';
+    public const NEGATIVE = 'neg';
 
     private const ALL_PARAMS = [
         self::WIDTH,
@@ -34,6 +35,7 @@ class Reimage
         self::PROFILE,
         self::GREYSCALE,
         self::BLUR,
+        self::NEGATIVE,
     ];
 
     private const HASH_LENGHT = 6;
@@ -249,6 +251,9 @@ class Reimage
             $imageClass->blur((int)$blur);
         }
 
+        if (array_key_exists(self::NEGATIVE, $params)) {
+            $imageClass->negative();
+        }
         //todo more operations
 
         return $imageClass;
