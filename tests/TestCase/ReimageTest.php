@@ -18,14 +18,12 @@ class ReimageTest extends TestCase
 
     public function setUp(): void
     {
-        $testDir = dirname(__FILE__, 3) . '/tests';
-
-        $this->cleanTempFolder($testDir . '/Temp');
+        $this->cleanTempFolder(TEST_DIR . '/Temp');
 
         $pathMapper = new BasicMapper([
             [
-                'source' => $testDir . '/TestImages',
-                'cache' => $testDir . '/Temp',
+                'source' => TEST_DIR . '/TestImages',
+                'cache' => TEST_DIR . '/Temp',
                 'public' => '/cdn',
             ],
         ]);
@@ -37,7 +35,7 @@ class ReimageTest extends TestCase
 
     private function cleanTempFolder(string $folder): void
     {
-        $files = (new Facade)->getFilesAsArray($folder, ['.jpg', '.png']);
+        $files = (new Facade)->getFilesAsArray($folder, ['.jpg', '.jpeg', '.png']);
         foreach ($files as $file) {
             unlink($file);
         }
@@ -61,9 +59,7 @@ class ReimageTest extends TestCase
 
     public function testCreateImage(): void
     {
-        $testDir = dirname(__DIR__) . '/TestImages';
-
-        $url = $this->reimage->createUrl($testDir . '/IMG_20190816_142144.jpg', [Reimage::WIDTH => 300, Reimage::HEIGHT => 200]);
+        $url = $this->reimage->createUrl(TEST_IMG1, [Reimage::WIDTH => 300, Reimage::HEIGHT => 200]);
         $parsedUrl = Utils::parseUrl($url);
 
         $this->assertSame('/cdn/IMG_20190816_142144_b35ccb.jpg', $parsedUrl['path']);
@@ -75,13 +71,23 @@ class ReimageTest extends TestCase
 
     public function testCreateImageRotate(): void
     {
-        $testDir = dirname(__DIR__) . '/TestImages';
-
-        $url = $this->reimage->createUrl($testDir . '/IMG_20190816_142144.jpg', [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::ROTATE => 90]);
+        $url = $this->reimage->createUrl(TEST_IMG1, [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::ROTATE => 90]);
         $parsedUrl = Utils::parseUrl($url);
 
         $this->assertSame('/cdn/IMG_20190816_142144_4569a5.jpg', $parsedUrl['path']);
         $this->assertSame(['w' => '300', 'h' => '200', 'r' => '90', 's' => 'fd698869eb23db8efa808101c1674737'], $parsedUrl['query_array']);
+
+        $cachePath = $this->reimage->createImage($parsedUrl['path'], $parsedUrl['query_array']);
+        $this->assertFileExists($cachePath);
+    }
+
+    public function testCreateImageGreyscale(): void
+    {
+        $url = $this->reimage->createUrl(TEST_IMG1, [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::GREYSCALE => 1]);
+        $parsedUrl = Utils::parseUrl($url);
+
+        $this->assertSame('/cdn/IMG_20190816_142144_2eae4b.jpg', $parsedUrl['path']);
+        $this->assertSame(['w' => '300', 'h' => '200', 'grey' => '1', 's' => 'bd016b4c4dfd3913262c24c0d51e505e'], $parsedUrl['query_array']);
 
         $cachePath = $this->reimage->createImage($parsedUrl['path'], $parsedUrl['query_array']);
         $this->assertFileExists($cachePath);

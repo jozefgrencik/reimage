@@ -10,6 +10,9 @@ use Reimage\ImageAdapters\ImageInterface as ReimageImageInterface;
 use Imagine\Image\AbstractImagine;
 use Imagine\Image\ImageInterface;
 
+/**
+ * @link https://imagine.readthedocs.io/
+ */
 class Imagine implements ReimageImageInterface
 {
     /** @var ImageInterface */
@@ -52,5 +55,10 @@ class Imagine implements ReimageImageInterface
     public function rotate(float $angle): void
     {
         $this->imageObject->rotate((int)round($angle));
+    }
+
+    public function greyscale(): void
+    {
+        $this->imageObject->effects()->grayscale();
     }
 }

@@ -5,6 +5,7 @@ namespace Reimage;
 
 use Reimage\Exceptions\ReimageException;
 use Reimage\ImageAdapters\ImageInterface;
+use Reimage\ImageAdapters\Imagine;
 use Reimage\ImageAdapters\Intervention;
 use Reimage\PathMapperAdapters\PathMapperInterface;
 
@@ -62,6 +63,7 @@ class Config
             /** @var ImageInterface[] $availableAdapters */
             $availableAdapters = [
                 new Intervention(),
+                new Imagine(),
             ];
 
             foreach ($availableAdapters as $adapter) {

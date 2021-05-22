@@ -23,4 +23,6 @@ interface ImageInterface
      * @param float $angle
      */
     public function rotate(float $angle): void;
+
+    public function greyscale(): void;
 }

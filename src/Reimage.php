@@ -19,6 +19,7 @@ class Reimage
     public const FOCUS_Y = 'fy';
     public const ROTATE = 'r';
     public const PROFILE = 'p';
+    public const GREYSCALE = 'grey';
 
     private const ALL_PARAMS = [
         self::WIDTH,
@@ -30,6 +31,7 @@ class Reimage
         self::FOCUS_Y,
         self::ROTATE,
         self::PROFILE,
+        self::GREYSCALE,
     ];
 
     private const HASH_LENGHT = 6;
@@ -234,6 +236,10 @@ class Reimage
         $rotationAngle = $params[self::ROTATE] ?? null;
         if ($rotationAngle !== null) {
             $imageClass->rotate((float)$rotationAngle);
+        }
+
+        if (array_key_exists(self::GREYSCALE, $params)) {
+            $imageClass->greyscale();
         }
 
         //todo more operations

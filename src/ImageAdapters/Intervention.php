@@ -5,6 +5,9 @@ namespace Reimage\ImageAdapters;
 
 use Intervention\Image\Image;
 
+/**
+ * @link http://image.intervention.io/
+ */
 class Intervention implements ImageInterface
 {
     /** @var Image */
@@ -41,5 +44,10 @@ class Intervention implements ImageInterface
     public function rotate(float $angle): void
     {
         $this->imageObject->rotate($angle);
+    }
+
+    public function greyscale(): void
+    {
+        $this->imageObject->greyscale();
     }
 }
