@@ -20,6 +20,7 @@ class Reimage
     public const ROTATE = 'r';
     public const PROFILE = 'p';
     public const GREYSCALE = 'grey';
+    public const BLUR = 'blur';
 
     private const ALL_PARAMS = [
         self::WIDTH,
@@ -32,6 +33,7 @@ class Reimage
         self::ROTATE,
         self::PROFILE,
         self::GREYSCALE,
+        self::BLUR,
     ];
 
     private const HASH_LENGHT = 6;
@@ -240,6 +242,11 @@ class Reimage
 
         if (array_key_exists(self::GREYSCALE, $params)) {
             $imageClass->greyscale();
+        }
+
+        $blur = $params[self::BLUR] ?? null;
+        if ($blur !== null) {
+            $imageClass->blur((int)$blur);
         }
 
         //todo more operations

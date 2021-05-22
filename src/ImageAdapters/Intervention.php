@@ -50,4 +50,9 @@ class Intervention implements ImageInterface
     {
         $this->imageObject->greyscale();
     }
+
+    public function blur(int $amount): void
+    {
+        $this->imageObject->blur($amount);
+    }
 }

@@ -25,4 +25,6 @@ interface ImageInterface
     public function rotate(float $angle): void;
 
     public function greyscale(): void;
+
+    public function blur(int $amount): void;
 }

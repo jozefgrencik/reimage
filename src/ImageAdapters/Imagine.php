@@ -61,4 +61,9 @@ class Imagine implements ReimageImageInterface
     {
         $this->imageObject->effects()->grayscale();
     }
+
+    public function blur(int $amount): void
+    {
+        $this->imageObject->effects()->blur($amount);
+    }
 }

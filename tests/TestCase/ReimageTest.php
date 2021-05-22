@@ -92,4 +92,16 @@ class ReimageTest extends TestCase
         $cachePath = $this->reimage->createImage($parsedUrl['path'], $parsedUrl['query_array']);
         $this->assertFileExists($cachePath);
     }
+
+    public function testCreateImageBlur(): void
+    {
+        $url = $this->reimage->createUrl(TEST_IMG1, [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::BLUR => 30]);
+        $parsedUrl = Utils::parseUrl($url);
+
+        $this->assertSame('/cdn/IMG_20190816_142144_00068a.jpg', $parsedUrl['path']);
+        $this->assertSame(['w' => '300', 'h' => '200', 'blur' => '30', 's' => 'e4452cac5c6f9924c44bedea5c99b509'], $parsedUrl['query_array']);
+
+        $cachePath = $this->reimage->createImage($parsedUrl['path'], $parsedUrl['query_array']);
+        $this->assertFileExists($cachePath);
+    }
 }
