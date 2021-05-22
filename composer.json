@@ -25,10 +25,12 @@
     "require-dev": {
         "intervention/image": "2.5.*",
         "phpstan/phpstan": "0.12.*",
-        "phpunit/phpunit": "^9.3"
+        "phpunit/phpunit": "^9.3",
+        "imagine/imagine": "^1.2"
     },
     "suggest": {
-        "intervention/image": "Image manipulation library"
+        "intervention/image": "One of supported Image manipulation library",
+        "imagine/imagine": "One of supported Image manipulation library"
     },
     "autoload": {
         "psr-4": {
