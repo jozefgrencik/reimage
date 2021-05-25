@@ -8,6 +8,7 @@ use Reimage\Config;
 use Reimage\Exceptions\ReimageException;
 use Reimage\PathMapperAdapters\BasicMapper;
 use Reimage\Reimage;
+use Reimage\Test\ImageUtils;
 use Reimage\Utils;
 use SebastianBergmann\FileIterator\Facade;
 
@@ -57,63 +58,62 @@ class ReimageTest extends TestCase
         );
     }
 
-    public function testCreateImage(): void
+    /**
+     * @dataProvider createImageProvider()
+     * @param string $testImage
+     * @param array<string,int> $options
+     * @param string $expectedUrl
+     * @param string $expectedImage
+     * @throws ReimageException
+     * @throws \ImagickException
+     */
+    public function testCreateImage(string $testImage, array $options, string $expectedUrl, string $expectedImage): void
     {
-        $url = $this->reimage->createUrl(TEST_IMG1, [Reimage::WIDTH => 300, Reimage::HEIGHT => 200]);
+        $url = $this->reimage->createUrl($testImage, $options);
+        $this->assertSame($expectedUrl, $url);
+
         $parsedUrl = Utils::parseUrl($url);
-
-        $this->assertSame('/cdn/IMG_20190816_142144_b35ccb.jpg', $parsedUrl['path']);
-        $this->assertSame(['w' => '300', 'h' => '200', 's' => 'ca88ef146a1bdda836bfdf24cd16cc0a'], $parsedUrl['query_array']);
-
         $cachePath = $this->reimage->createImage($parsedUrl['path'], $parsedUrl['query_array']);
         $this->assertFileExists($cachePath);
+        $this->assertTrue(ImageUtils::imagesAreIdentical($cachePath, $expectedImage));
     }
 
-    public function testCreateImageRotate(): void
+    /**
+     * @return array<string, array<string, mixed>>
+     */
+    public function createImageProvider(): array
     {
-        $url = $this->reimage->createUrl(TEST_IMG1, [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::ROTATE => 90]);
-        $parsedUrl = Utils::parseUrl($url);
-
-        $this->assertSame('/cdn/IMG_20190816_142144_4569a5.jpg', $parsedUrl['path']);
-        $this->assertSame(['w' => '300', 'h' => '200', 'r' => '90', 's' => 'fd698869eb23db8efa808101c1674737'], $parsedUrl['query_array']);
-
-        $cachePath = $this->reimage->createImage($parsedUrl['path'], $parsedUrl['query_array']);
-        $this->assertFileExists($cachePath);
-    }
-
-    public function testCreateImageGreyscale(): void
-    {
-        $url = $this->reimage->createUrl(TEST_IMG1, [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::GREYSCALE => 1]);
-        $parsedUrl = Utils::parseUrl($url);
-
-        $this->assertSame('/cdn/IMG_20190816_142144_2eae4b.jpg', $parsedUrl['path']);
-        $this->assertSame(['w' => '300', 'h' => '200', 'grey' => '1', 's' => 'bd016b4c4dfd3913262c24c0d51e505e'], $parsedUrl['query_array']);
-
-        $cachePath = $this->reimage->createImage($parsedUrl['path'], $parsedUrl['query_array']);
-        $this->assertFileExists($cachePath);
-    }
-
-    public function testCreateImageBlur(): void
-    {
-        $url = $this->reimage->createUrl(TEST_IMG1, [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::BLUR => 30]);
-        $parsedUrl = Utils::parseUrl($url);
-
-        $this->assertSame('/cdn/IMG_20190816_142144_00068a.jpg', $parsedUrl['path']);
-        $this->assertSame(['w' => '300', 'h' => '200', 'blur' => '30', 's' => 'e4452cac5c6f9924c44bedea5c99b509'], $parsedUrl['query_array']);
-
-        $cachePath = $this->reimage->createImage($parsedUrl['path'], $parsedUrl['query_array']);
-        $this->assertFileExists($cachePath);
-    }
-
-    public function testCreateImageNegative(): void
-    {
-        $url = $this->reimage->createUrl(TEST_IMG1, [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::NEGATIVE => 1]);
-        $parsedUrl = Utils::parseUrl($url);
-
-        $this->assertSame('/cdn/IMG_20190816_142144_8b839f.jpg', $parsedUrl['path']);
-        $this->assertSame(['w' => '300', 'h' => '200', 'neg' => '1', 's' => 'ab019f58b41a5bdd091fe2e8aefdf0f8'], $parsedUrl['query_array']);
-
-        $cachePath = $this->reimage->createImage($parsedUrl['path'], $parsedUrl['query_array']);
-        $this->assertFileExists($cachePath);
+        return [
+            'basic_resize' => [
+                'test_image' => TEST_IMG1,
+                'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200],
+                'result_url' => '/cdn/IMG_20190816_142144_b35ccb.jpg?w=300&h=200&s=ca88ef146a1bdda836bfdf24cd16cc0a',
+                'result_image' => TEST_DIR . '/TestResultsImages/paper_basic_resize.jpg',
+            ],
+            'rotate_90' => [
+                'test_image' => TEST_IMG1,
+                'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::ROTATE => 90],
+                'result_url' => '/cdn/IMG_20190816_142144_4569a5.jpg?w=300&h=200&r=90&s=fd698869eb23db8efa808101c1674737',
+                'result_image' => TEST_DIR . '/TestResultsImages/paper_rotate_90.jpg',
+            ],
+            'greyscale' => [
+                'test_image' => TEST_IMG1,
+                'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::GREYSCALE => 1],
+                'result_url' => '/cdn/IMG_20190816_142144_2eae4b.jpg?w=300&h=200&grey=1&s=bd016b4c4dfd3913262c24c0d51e505e',
+                'result_image' => TEST_DIR . '/TestResultsImages/paper_greyscale.jpg',
+            ],
+            'blur' => [
+                'test_image' => TEST_IMG1,
+                'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::BLUR => 30],
+                'result_url' => '/cdn/IMG_20190816_142144_00068a.jpg?w=300&h=200&blur=30&s=e4452cac5c6f9924c44bedea5c99b509',
+                'result_image' => TEST_DIR . '/TestResultsImages/paper_blur.jpg',
+            ],
+            'negative' => [
+                'test_image' => TEST_IMG1,
+                'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::NEGATIVE => 1],
+                'result_url' => '/cdn/IMG_20190816_142144_8b839f.jpg?w=300&h=200&neg=1&s=ab019f58b41a5bdd091fe2e8aefdf0f8',
+                'result_image' => TEST_DIR . '/TestResultsImages/paper_negative.jpg',
+            ],
+        ];
     }
 }
