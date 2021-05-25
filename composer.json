@@ -23,6 +23,7 @@
         "php": ">=7.3"
     },
     "require-dev": {
+        "ext-imagick": "*",
         "intervention/image": "2.5.*",
         "phpstan/phpstan": "0.12.*",
         "phpunit/phpunit": "^9.3",

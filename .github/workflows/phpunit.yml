@@ -5,7 +5,7 @@ jobs:
   phpunit:
     runs-on: ubuntu-latest
     env:
-      extensions: openssl
+      extensions: openssl, imagick
       key: cache-v20210425
     strategy:
       fail-fast: false
