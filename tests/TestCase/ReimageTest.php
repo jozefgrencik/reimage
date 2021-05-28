@@ -81,7 +81,7 @@ class ReimageTest extends TestCase
         echo 'Name: ' . $this->getName() . PHP_EOL;
         echo 'CachePath: ' . $cachePath . PHP_EOL;
         echo 'ExpectedImage: ' . $expectedImage . PHP_EOL;
-        echo 'DiffScore: ' . ImageUtils::diffScore($cachePath, $expectedImage);
+        echo 'DiffScore: ' . ImageUtils::diffScore($cachePath, $expectedImage). PHP_EOL;
 
         $this->assertTrue(ImageUtils::imagesAreIdentical($cachePath, $expectedImage));
     }
