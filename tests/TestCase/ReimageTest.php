@@ -75,6 +75,14 @@ class ReimageTest extends TestCase
         $parsedUrl = Utils::parseUrl($url);
         $cachePath = $this->reimage->createImage($parsedUrl['path'], $parsedUrl['query_array']);
         $this->assertFileExists($cachePath);
+
+        //debug info
+        echo '-----------------------' . PHP_EOL;
+        echo 'Name: ' . $this->getName() . PHP_EOL;
+        echo 'CachePath: ' . $cachePath . PHP_EOL;
+        echo 'ExpectedImage: ' . $expectedImage . PHP_EOL;
+        echo 'DiffScore: ' . ImageUtils::diffScore($cachePath, $expectedImage);
+
         $this->assertTrue(ImageUtils::imagesAreIdentical($cachePath, $expectedImage));
     }
 

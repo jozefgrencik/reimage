@@ -58,7 +58,7 @@ jobs:
 
       - name: Run PHPUnit
         run: |
-          vendor/bin/phpunit --configuration phpunit.xml.dist --log-junit tmp/testsuites.xml
+          vendor/bin/phpunit --configuration phpunit.xml.dist --log-junit tmp/testsuites.xml --debug
 
       - name: Persist test results
         uses: actions/upload-artifact@v2
