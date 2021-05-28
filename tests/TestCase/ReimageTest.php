@@ -6,6 +6,8 @@ namespace Reimage\Test\TestCase;
 use PHPUnit\Framework\TestCase;
 use Reimage\Config;
 use Reimage\Exceptions\ReimageException;
+use Reimage\ImageAdapters\Imagine;
+use Reimage\ImageAdapters\Intervention;
 use Reimage\PathMapperAdapters\BasicMapper;
 use Reimage\Reimage;
 use Reimage\Test\ImageUtils;
@@ -20,7 +22,11 @@ class ReimageTest extends TestCase
     public function setUp(): void
     {
         $this->cleanTempFolder(TEST_DIR . '/Temp');
+        $this->reimage = $this->getReimageImagine();
+    }
 
+    private function getReimageImagine(): Reimage
+    {
         $pathMapper = new BasicMapper([
             [
                 'source' => TEST_DIR . '/TestImages',
@@ -29,9 +35,26 @@ class ReimageTest extends TestCase
             ],
         ]);
 
-        $config = (new Config())->setPathMapper($pathMapper);
+        $config = (new Config())
+            ->setPathMapper($pathMapper)
+            ->setImager(new Imagine());
+        return new Reimage($config);
+    }
 
-        $this->reimage = new Reimage($config);
+    private function getReimageIntervention(): Reimage
+    {
+        $pathMapper = new BasicMapper([
+            [
+                'source' => TEST_DIR . '/TestImages',
+                'cache' => TEST_DIR . '/Temp',
+                'public' => '/cdn',
+            ],
+        ]);
+
+        $config = (new Config())
+            ->setPathMapper($pathMapper)
+            ->setImager(new Intervention());
+        return new Reimage($config);
     }
 
     private function cleanTempFolder(string $folder): void
@@ -69,21 +92,30 @@ class ReimageTest extends TestCase
      */
     public function testCreateImage(string $testImage, array $options, string $expectedUrl, string $expectedImage): void
     {
-        $url = $this->reimage->createUrl($testImage, $options);
-        $this->assertSame($expectedUrl, $url);
+        $reimageInstances = [
+            'intervention' => $this->getReimageIntervention(),
+//            'imagine' => $this->getReimageImagine(),
+        ];
 
-        $parsedUrl = Utils::parseUrl($url);
-        $cachePath = $this->reimage->createImage($parsedUrl['path'], $parsedUrl['query_array']);
-        $this->assertFileExists($cachePath);
+        foreach ($reimageInstances as $instanceName => $reimage) {
+            $url = $reimage->createUrl($testImage, $options);
+            $this->assertSame($expectedUrl, $url);
 
-        //debug info
-        echo '-----------------------' . PHP_EOL;
-        echo 'Name: ' . $this->getName() . PHP_EOL;
-        echo 'CachePath: ' . $cachePath . PHP_EOL;
-        echo 'ExpectedImage: ' . $expectedImage . PHP_EOL;
-        echo 'DiffScore: ' . ImageUtils::diffScore($cachePath, $expectedImage). PHP_EOL;
+            $parsedUrl = Utils::parseUrl($url);
+            $cachePath = $reimage->createImage($parsedUrl['path'], $parsedUrl['query_array']);
 
-        $this->assertTrue(ImageUtils::imagesAreIdentical($cachePath, $expectedImage));
+            //debug info
+            echo PHP_EOL . '-----------------------' . PHP_EOL;
+            echo 'Test name: ' . $this->getName() . PHP_EOL;
+            echo 'Reimage inst name: ' . $instanceName . PHP_EOL;
+            echo 'CachePath: ' . $cachePath . PHP_EOL;
+            echo 'ExpectedImage: ' . $expectedImage . PHP_EOL;
+            echo 'DiffScore: ' . number_format(ImageUtils::diffScore($cachePath, $expectedImage), 6) . PHP_EOL;
+
+            //tests
+            $this->assertFileExists($cachePath);
+            $this->assertTrue(ImageUtils::imagesAreIdentical($cachePath, $expectedImage));
+        }
     }
 
     /**
