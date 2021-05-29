@@ -8,4 +8,4 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 // session_id('cli'); //???
 
 define('TEST_DIR', __DIR__);
-define('TEST_IMG1', __DIR__ . '/TestImages/IMG_20190816_142144.jpg');
+define('TEST_IMG1', __DIR__ . '/Fixture/IMG_20190816_142144.jpg');

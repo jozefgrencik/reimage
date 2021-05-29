@@ -29,7 +29,7 @@ class ReimageTest extends TestCase
     {
         $pathMapper = new BasicMapper([
             [
-                'source' => TEST_DIR . '/TestImages',
+                'source' => TEST_DIR . '/Fixture',
                 'cache' => TEST_DIR . '/Temp',
                 'public' => '/cdn',
             ],
@@ -45,7 +45,7 @@ class ReimageTest extends TestCase
     {
         $pathMapper = new BasicMapper([
             [
-                'source' => TEST_DIR . '/TestImages',
+                'source' => TEST_DIR . '/Fixture',
                 'cache' => TEST_DIR . '/Temp',
                 'public' => '/cdn',
             ],
@@ -128,31 +128,31 @@ class ReimageTest extends TestCase
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200],
                 'result_url' => '/cdn/IMG_20190816_142144_b35ccb.jpg?w=300&h=200&s=ca88ef146a1bdda836bfdf24cd16cc0a',
-                'result_image' => TEST_DIR . '/TestResultsImages/paper_basic_resize.jpg',
+                'result_image' => TEST_DIR . '/TestExpectations/paper_basic_resize.jpg',
             ],
             'rotate_90' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::ROTATE => 90],
                 'result_url' => '/cdn/IMG_20190816_142144_4569a5.jpg?w=300&h=200&r=90&s=fd698869eb23db8efa808101c1674737',
-                'result_image' => TEST_DIR . '/TestResultsImages/paper_rotate_90.jpg',
+                'result_image' => TEST_DIR . '/TestExpectations/paper_rotate_90.jpg',
             ],
             'greyscale' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::GREYSCALE => 1],
                 'result_url' => '/cdn/IMG_20190816_142144_2eae4b.jpg?w=300&h=200&grey=1&s=bd016b4c4dfd3913262c24c0d51e505e',
-                'result_image' => TEST_DIR . '/TestResultsImages/paper_greyscale.jpg',
+                'result_image' => TEST_DIR . '/TestExpectations/paper_greyscale.jpg',
             ],
             'blur' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::BLUR => 30],
                 'result_url' => '/cdn/IMG_20190816_142144_00068a.jpg?w=300&h=200&blur=30&s=e4452cac5c6f9924c44bedea5c99b509',
-                'result_image' => TEST_DIR . '/TestResultsImages/paper_blur.jpg',
+                'result_image' => TEST_DIR . '/TestExpectations/paper_blur.jpg',
             ],
             'negative' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::NEGATIVE => 1],
                 'result_url' => '/cdn/IMG_20190816_142144_8b839f.jpg?w=300&h=200&neg=1&s=ab019f58b41a5bdd091fe2e8aefdf0f8',
-                'result_image' => TEST_DIR . '/TestResultsImages/paper_negative.jpg',
+                'result_image' => TEST_DIR . '/TestExpectations/paper_negative.jpg',
             ],
         ];
     }
