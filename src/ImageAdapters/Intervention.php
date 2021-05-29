@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Reimage\ImageAdapters;
 
 use Intervention\Image\Image;
+use Reimage\Exceptions\ReimageException;
 
 /**
  * @link http://image.intervention.io/
@@ -36,9 +37,15 @@ class Intervention implements ImageInterface
 
     public function resize(?int $width = null, ?int $height = null): void
     {
-        $this->imageObject->resize($width, $height, function ($constraint) {
-            $constraint->aspectRatio();
-        });
+        if ($width === null || $height === null) {
+            throw new ReimageException('Currently unsupported'); //todo fix
+        }
+
+        $this->imageObject->fit($width, $height);
+
+//        $this->imageObject->resize($width, $height, function (Constraint $constraint) {
+//            $constraint->aspectRatio();
+//        });
     }
 
     public function rotate(float $angle): void
