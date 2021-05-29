@@ -16,13 +16,14 @@ use SebastianBergmann\FileIterator\Facade;
 
 class ReimageTest extends TestCase
 {
-    /** @var Reimage */
-    private $reimage;
+    public static function setUpBeforeClass(): void
+    {
+        self::cleanFolder(TEST_DIR . '/TestResults');
+    }
 
     public function setUp(): void
     {
-        $this->cleanTempFolder(TEST_DIR . '/Temp');
-        $this->reimage = $this->getReimageImagine();
+        self::cleanFolder(TEST_DIR . '/Temp');
     }
 
     private function getReimageImagine(): Reimage
@@ -57,7 +58,7 @@ class ReimageTest extends TestCase
         return new Reimage($config);
     }
 
-    private function cleanTempFolder(string $folder): void
+    private static function cleanFolder(string $folder): void
     {
         $files = (new Facade)->getFilesAsArray($folder, ['.jpg', '.jpeg', '.png']);
         foreach ($files as $file) {
@@ -67,7 +68,7 @@ class ReimageTest extends TestCase
 
     public function testCreateUrl(): void
     {
-        $url = $this->reimage->createUrl('/my_originals/iStock_000009041558XLarge.jpg', [Reimage::WIDTH => 300, Reimage::HEIGHT => 200]);
+        $url = $this->getReimageImagine()->createUrl('/my_originals/iStock_000009041558XLarge.jpg', [Reimage::WIDTH => 300, Reimage::HEIGHT => 200]);
         $this->assertSame('/my_originals/iStock_000009041558XLarge_6b5016.jpg?w=300&h=200&s=73545fcfc8e7c6ef9c6495695be4bed4', $url);
     }
 
@@ -75,7 +76,7 @@ class ReimageTest extends TestCase
     {
         $this->expectException(ReimageException::class);
 
-        $this->reimage->createImage(
+        $this->getReimageImagine()->createImage(
             '/my_originals/iStock_000009041558XLarge_5ec492.jpg',
             ['w' => '300', 'h' => '200', 's' => 'a1ff6fc471f06863589d080aee4468e7']
         );
