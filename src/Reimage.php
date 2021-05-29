@@ -17,11 +17,14 @@ class Reimage
     public const BACKGROUND_COLOR = 'bc';
     public const FOCUS_X = 'fx';
     public const FOCUS_Y = 'fy';
+    public const FOCUS_X_PERCENT = 'fxp';
+    public const FOCUS_Y_PERCENT = 'fyp';
     public const ROTATE = 'r';
     public const PROFILE = 'p';
     public const GREYSCALE = 'grey';
     public const BLUR = 'blur';
     public const NEGATIVE = 'neg';
+    public const BRIGHTNESS = 'b';
 
     private const ALL_PARAMS = [
         self::WIDTH,
@@ -31,11 +34,14 @@ class Reimage
         self::BACKGROUND_COLOR,
         self::FOCUS_X,
         self::FOCUS_Y,
+        self::FOCUS_X_PERCENT,
+        self::FOCUS_Y_PERCENT,
         self::ROTATE,
         self::PROFILE,
         self::GREYSCALE,
         self::BLUR,
         self::NEGATIVE,
+        self::BRIGHTNESS,
     ];
 
     private const HASH_LENGHT = 6;
@@ -254,7 +260,11 @@ class Reimage
         if (array_key_exists(self::NEGATIVE, $params)) {
             $imageClass->negative();
         }
-        //todo more operations
+
+        $brightness = $params[self::BRIGHTNESS] ?? null;
+        if ($brightness !== null) {
+            $imageClass->brightness((int)$brightness);
+        }
 
         return $imageClass;
     }

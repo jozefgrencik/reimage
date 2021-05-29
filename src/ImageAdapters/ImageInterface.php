@@ -29,4 +29,6 @@ interface ImageInterface
     public function blur(int $amount): void;
 
     public function negative(): void;
+
+    public function brightness(int $amount): void;
 }

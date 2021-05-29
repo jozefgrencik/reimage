@@ -71,4 +71,9 @@ class Imagine implements ReimageImageInterface
     {
         $this->imageObject->effects()->negative();
     }
+
+    public function brightness(int $amount): void
+    {
+        throw new ReimageException('Currently unsupported');
+    }
 }

@@ -67,4 +67,9 @@ class Intervention implements ImageInterface
     {
         $this->imageObject->invert();
     }
+
+    public function brightness(int $amount): void
+    {
+        $this->imageObject->brightness($amount);
+    }
 }
