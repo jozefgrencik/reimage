@@ -104,6 +104,8 @@ class ReimageTest extends TestCase
             $parsedUrl = Utils::parseUrl($url);
             $cachePath = $reimage->createImage($parsedUrl['path'], $parsedUrl['query_array']);
 
+            $areIdentical = ImageUtils::imagesAreIdentical($cachePath, $expectedImage);
+
             //debug info
             echo PHP_EOL . '-----------------------' . PHP_EOL;
             echo 'Test name: ' . $this->getName() . PHP_EOL;
@@ -112,9 +114,18 @@ class ReimageTest extends TestCase
             echo 'ExpectedImage: ' . $expectedImage . PHP_EOL;
             echo 'DiffScore: ' . number_format(ImageUtils::diffScore($cachePath, $expectedImage), 6) . PHP_EOL;
 
+            //create visual comparison results
+            if (!$areIdentical) {
+                $uniqName = str_replace(' ', '_', mb_strtolower($this->getName() . '-' . $instanceName));
+                $prefix = mb_ereg_replace('[^a-z0-9_-]', '', $uniqName);
+                copy($cachePath, TEST_DIR . '/TestResults/' . $prefix . '_result.jpg');
+                copy($expectedImage, TEST_DIR . '/TestResults/' . $prefix . '_expected.jpg');
+                ImageUtils::createVisualComparison($cachePath, $expectedImage, TEST_DIR . '/TestResults/' . $prefix . '_diff.jpg');
+            }
+
             //tests
             $this->assertFileExists($cachePath);
-            $this->assertTrue(ImageUtils::imagesAreIdentical($cachePath, $expectedImage));
+            $this->assertTrue($areIdentical);
         }
     }
 
