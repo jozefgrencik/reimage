@@ -39,4 +39,14 @@ class ImageUtilsTest extends TestCase
             ],
         ];
     }
+
+    public function testCreateVisualComparison(): void
+    {
+        $img1 = TEST_DIR . '/TestResultsImages/paper_blur_10.jpg';
+        $img2 = TEST_DIR . '/TestResultsImages/paper_blur_30.jpg';
+        $output = TEST_DIR . '/Temp/diff_1.jpg';
+
+        ImageUtils::createVisualComparison($img1, $img2, $output);
+        $this->assertFileExists($output);
+    }
 }
