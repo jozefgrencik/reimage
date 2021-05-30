@@ -82,4 +82,9 @@ class Imagine implements ReimageImageInterface
     {
         throw new ReimageException('Currently unsupported');
     }
+
+    public function gamma(float $amount): void
+    {
+        throw new ReimageException('Currently unsupported');
+    }
 }

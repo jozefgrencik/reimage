@@ -32,5 +32,11 @@ interface ImageInterface
 
     public function brightness(int $amount): void;
 
+    /**
+     * @param float $amount
+     * @link http://www.imagemagick.org/script/command-line-options.php#gamma
+     */
+    public function gamma(float $amount): void;
+
     public function flip(string $direction): void;
 }

@@ -26,6 +26,7 @@ class Reimage
     public const NEGATIVE = 'neg';
     public const BRIGHTNESS = 'b';
     public const FLIP = 'flip';
+    public const GAMMA = 'gam';
 
     private const ALL_PARAMS = [
         self::WIDTH,
@@ -44,6 +45,7 @@ class Reimage
         self::NEGATIVE,
         self::BRIGHTNESS,
         self::FLIP,
+        self::GAMMA,
     ];
 
     private const HASH_LENGHT = 6;
@@ -271,6 +273,11 @@ class Reimage
         $flip = $params[self::FLIP] ?? null;
         if ($flip !== null) {
             $imageClass->flip((string)$flip);
+        }
+
+        $gamma = $params[self::GAMMA] ?? null;
+        if ($gamma !== null) {
+            $imageClass->gamma((float)$gamma);
         }
 
         return $imageClass;

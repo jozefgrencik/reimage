@@ -77,4 +77,9 @@ class Intervention implements ImageInterface
     {
         $this->imageObject->flip($direction);
     }
+
+    public function gamma(float $amount): void
+    {
+        $this->imageObject->gamma($amount);
+    }
 }
