@@ -35,7 +35,7 @@ class ImageUtils
     {
         $score = self::diffScore($img1Path, $img2Path);
 
-        return $score < 0.00006; //todo improve value
+        return $score < 0.0001; //todo improve value
     }
 
     /**
