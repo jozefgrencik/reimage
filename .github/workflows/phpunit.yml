@@ -66,6 +66,16 @@ jobs:
           name: PHPUnit
           path: tmp/testsuites.xml
 
+      - name: Tar failed test results
+        if: failure()
+        run: tar -cvf failed_test_results.tar tests/TestResults
+
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: FailedTests
+          path: failed_test_results.tar
+
       - name: Run phpstan level Max
         run:
           composer run phpstan
