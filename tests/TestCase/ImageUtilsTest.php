@@ -18,7 +18,7 @@ class ImageUtilsTest extends TestCase
     public function testDiffScore(string $img1Path, string $img2Path, float $expectedScore): void
     {
         $scoreActual = ImageUtils::diffScore($img1Path, $img2Path);
-        $this->assertEqualsWithDelta($expectedScore, $scoreActual, 0.00001);
+        $this->assertEqualsWithDelta($expectedScore, $scoreActual, 0.00003);
     }
 
     /**
