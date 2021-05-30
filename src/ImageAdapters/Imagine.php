@@ -49,7 +49,8 @@ class Imagine implements ReimageImageInterface
         if ($width === null || $height === null) {
             throw new ReimageException('Currently unsupported'); //todo fix
         }
-        $this->imageObject->resize(new Box($width, $height));
+//        $this->imageObject->resize(new Box($width, $height));
+        $this->imageObject = $this->imageObject->thumbnail(new Box($width, $height), $this->imageObject::THUMBNAIL_OUTBOUND);
     }
 
     public function rotate(float $angle): void
