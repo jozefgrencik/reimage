@@ -87,4 +87,9 @@ class Imagine implements ReimageImageInterface
     {
         throw new ReimageException('Currently unsupported');
     }
+
+    public function contrast(int $amount): void
+    {
+        throw new ReimageException('Currently unsupported');
+    }
 }

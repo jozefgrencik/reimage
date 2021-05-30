@@ -82,4 +82,9 @@ class Intervention implements ImageInterface
     {
         $this->imageObject->gamma($amount);
     }
+
+    public function contrast(int $amount): void
+    {
+        $this->imageObject->contrast($amount);
+    }
 }

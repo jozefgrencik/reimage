@@ -202,6 +202,18 @@ class ReimageTest extends TestCase
                 'result_url' => '/cdn/IMG_20190816_142144_e84e9d.jpg?w=300&h=200&gam=2.3&s=919e1ca1034c80e059fbaaf30771172a',
                 'result_image' => TEST_DIR . '/TestExpectations/paper_gamma_23.jpg',
             ],
+            'contrast_plus50' => [
+                'test_image' => TEST_IMG1,
+                'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::CONTRAST => 50],
+                'result_url' => '/cdn/IMG_20190816_142144_173eaa.jpg?w=300&h=200&con=50&s=5efad9da919593a0789b72ee7f6d7a61',
+                'result_image' => TEST_DIR . '/TestExpectations/paper_contrast_plus50.jpg',
+            ],
+            'contrast_minus50' => [
+                'test_image' => TEST_IMG1,
+                'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::CONTRAST => -50],
+                'result_url' => '/cdn/IMG_20190816_142144_2c2032.jpg?w=300&h=200&con=-50&s=c53c9852ebcc45090e55b21dfe59f95a',
+                'result_image' => TEST_DIR . '/TestExpectations/paper_contrast_minus50.jpg',
+            ],
         ];
     }
 }

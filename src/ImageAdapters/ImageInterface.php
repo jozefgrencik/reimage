@@ -39,4 +39,9 @@ interface ImageInterface
     public function gamma(float $amount): void;
 
     public function flip(string $direction): void;
+
+    /**
+     * @param int $amount (-100 .. +100)
+     */
+    public function contrast(int $amount): void;
 }
