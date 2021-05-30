@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Reimage\ImageAdapters;
 
 use Intervention\Image\Image;
+use Intervention\Image\ImageManager;
 use Reimage\Exceptions\ReimageException;
 
 /**
@@ -21,8 +22,9 @@ class Intervention implements ImageInterface
 
     public function loadImage(string $realPath): void
     {
-//        Image::configure(['driver' => 'gd']);
-        $this->imageObject = \Intervention\Image\ImageManagerStatic::make($realPath);
+//        $intervention = new ImageManager(['driver' => 'imagick']); //todo .. possibility to choose
+        $intervention = new ImageManager(['driver' => 'gd']);
+        $this->imageObject = $intervention->make($realPath);
     }
 
     public function getImageObject(): Image
