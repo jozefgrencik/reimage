@@ -70,7 +70,8 @@ jobs:
         if: failure()
         run: tar -cvf failed_test_results.tar tests/TestResults
 
-      - uses: actions/upload-artifact@v2
+      - name: Persist failed test results
+        uses: actions/upload-artifact@v2
         if: failure()
         with:
           name: FailedTests
