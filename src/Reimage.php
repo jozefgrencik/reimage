@@ -25,6 +25,7 @@ class Reimage
     public const BLUR = 'blur';
     public const NEGATIVE = 'neg';
     public const BRIGHTNESS = 'b';
+    public const FLIP = 'flip';
 
     private const ALL_PARAMS = [
         self::WIDTH,
@@ -42,6 +43,7 @@ class Reimage
         self::BLUR,
         self::NEGATIVE,
         self::BRIGHTNESS,
+        self::FLIP,
     ];
 
     private const HASH_LENGHT = 6;
@@ -264,6 +266,11 @@ class Reimage
         $brightness = $params[self::BRIGHTNESS] ?? null;
         if ($brightness !== null) {
             $imageClass->brightness((int)$brightness);
+        }
+
+        $flip = $params[self::FLIP] ?? null;
+        if ($flip !== null) {
+            $imageClass->flip((string)$flip);
         }
 
         return $imageClass;

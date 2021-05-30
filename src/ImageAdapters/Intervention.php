@@ -72,4 +72,9 @@ class Intervention implements ImageInterface
     {
         $this->imageObject->brightness($amount);
     }
+
+    public function flip(string $direction): void
+    {
+        $this->imageObject->flip($direction);
+    }
 }

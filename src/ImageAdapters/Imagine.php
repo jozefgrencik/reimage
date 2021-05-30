@@ -77,4 +77,9 @@ class Imagine implements ReimageImageInterface
     {
         throw new ReimageException('Currently unsupported');
     }
+
+    public function flip(string $direction): void
+    {
+        throw new ReimageException('Currently unsupported');
+    }
 }

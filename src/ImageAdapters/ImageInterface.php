@@ -31,4 +31,6 @@ interface ImageInterface
     public function negative(): void;
 
     public function brightness(int $amount): void;
+
+    public function flip(string $direction): void;
 }
