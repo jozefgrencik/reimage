@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Reimage\Test\TestCase;
 
+use Intervention\Image\ImageManager;
 use PHPUnit\Framework\TestCase;
 use Reimage\Config;
 use Reimage\Exceptions\ReimageException;
@@ -38,7 +39,7 @@ class ReimageTest extends TestCase
 
         $config = (new Config())
             ->setPathMapper($pathMapper)
-            ->setImager(new Imagine());
+            ->setImager(new Imagine(new \Imagine\GD\Imagine()));
         return new Reimage($config);
     }
 
@@ -54,7 +55,7 @@ class ReimageTest extends TestCase
 
         $config = (new Config())
             ->setPathMapper($pathMapper)
-            ->setImager(new Intervention());
+            ->setImager(new Intervention(new ImageManager(['driver' => 'gd'])));
         return new Reimage($config);
     }
 
@@ -117,8 +118,8 @@ class ReimageTest extends TestCase
 
             //create visual comparison results
             if (!$areIdentical) {
-                $uniqName = str_replace(' ', '_', mb_strtolower($this->getName() . '-' . $instanceName));
-                $prefix = mb_ereg_replace('[^a-z0-9_-]', '', $uniqName);
+                $uniqName = str_replace(' ', '_', strtolower($this->getName() . '-' . $instanceName));
+                $prefix = preg_replace('[^a-z0-9_-]', '', $uniqName);
                 copy($cachePath, TEST_DIR . '/TestResults/' . $prefix . '_result.jpg');
                 copy($expectedImage, TEST_DIR . '/TestResults/' . $prefix . '_expected.jpg');
                 ImageUtils::createVisualComparison($cachePath, $expectedImage, TEST_DIR . '/TestResults/' . $prefix . '_diff.jpg');

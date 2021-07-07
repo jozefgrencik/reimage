@@ -5,7 +5,7 @@ namespace Reimage\ImageAdapters;
 
 interface ImageInterface
 {
-    public function isInstalled(): bool;
+//    public static function isInstalled(): bool;
 
     public function loadImage(string $realPath): void;
 

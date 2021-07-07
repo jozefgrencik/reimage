@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Reimage;
 
+use Imagine\Image\AbstractImagine;
+use Intervention\Image\ImageManager;
 use Reimage\Exceptions\ReimageException;
 use Reimage\ImageAdapters\ImageInterface;
 use Reimage\ImageAdapters\Imagine;
@@ -59,27 +61,62 @@ class Config
     {
         if ($this->imageAdapter) {
             return $this->imageAdapter;
-        } else {
-            /** @var ImageInterface[] $availableAdapters */
-            $availableAdapters = [
-                new Intervention(),
-                new Imagine(),
-            ];
-
-            foreach ($availableAdapters as $adapter) {
-                if ($adapter->isInstalled()) {
-                    return $adapter;
-                }
-            }
-
-            throw new ReimageException('No available image adapter was found');
         }
+
+        // we will guess
+        if (class_exists(ImageManager::class)) {
+            if ($this->isImagickEnabled()) {
+                $this->imageAdapter = new Intervention(new ImageManager(['driver' => 'imagick']));
+            } elseif ($this->isGdEnabled()) {
+                $this->imageAdapter = new Intervention(new ImageManager(['driver' => 'gd']));
+            }
+        }
+
+        if ($this->imageAdapter === null && class_exists(AbstractImagine::class)) {
+            if ($this->isImagickEnabled()) {
+                $this->imageAdapter = new Imagine(new \Imagine\Imagick\Imagine());
+            } elseif ($this->isGdEnabled()) {
+                $this->imageAdapter = new Imagine(new \Imagine\Gd\Imagine());
+            } elseif ($this->isGmagickEnabled()) {
+                $this->imageAdapter = new Imagine(new \Imagine\Gmagick\Imagine());
+            }
+        }
+
+        throw new ReimageException('No available image adapter was found');
     }
 
-    public function setImager(ImageInterface $imageAdapter): self
+    /**
+     * @param ImageInterface|ImageManager $imageAdapter
+     * @return $this
+     * @throws ReimageException
+     */
+    public function setImager($imageAdapter): self
     {
-        $this->imageAdapter = $imageAdapter;
+        if ($imageAdapter instanceof ImageInterface) {
+            $this->imageAdapter = $imageAdapter;
+        } elseif ($imageAdapter instanceof ImageManager) {
+            $this->imageAdapter = new Intervention($imageAdapter);
+        } else {
+            //todo imagine
+            throw new ReimageException('Unsupported Imager');
+        }
 
         return $this;
     }
+
+    private function isGdEnabled(): bool
+    {
+        return extension_loaded('gd');
+    }
+
+    private function isImagickEnabled(): bool
+    {
+        return extension_loaded('imagick');
+    }
+
+    private function isGmagickEnabled(): bool
+    {
+        return extension_loaded('gmagick');
+    }
+
 }

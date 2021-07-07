@@ -15,16 +15,25 @@ class Intervention implements ImageInterface
     /** @var Image */
     private $imageObject;
 
-    public function isInstalled(): bool
+    /** @var ImageManager */
+    private $interventionManager;
+
+    /**
+     * @param ImageManager $imageManager
+     */
+    public function __construct(ImageManager $imageManager)
     {
-        return class_exists(Image::class);
+        $this->interventionManager = $imageManager;
     }
+
+//    public static function isInstalled(): bool
+//    {
+//        return class_exists(Image::class);
+//    }
 
     public function loadImage(string $realPath): void
     {
-//        $intervention = new ImageManager(['driver' => 'imagick']); //todo .. possibility to choose
-        $intervention = new ImageManager(['driver' => 'gd']);
-        $this->imageObject = $intervention->make($realPath);
+        $this->imageObject = $this->interventionManager->make($realPath);
     }
 
     public function getImageObject(): Image

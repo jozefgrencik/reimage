@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Reimage\ImageAdapters;
 
-use Exception;
 use Imagine\Image\Box;
 use Reimage\Exceptions\ReimageException;
 use Reimage\ImageAdapters\ImageInterface as ReimageImageInterface;
@@ -18,20 +17,25 @@ class Imagine implements ReimageImageInterface
     /** @var ImageInterface */
     private $imageObject;
 
-    public function isInstalled(): bool
+    /** @var AbstractImagine */
+    private $imagine;
+
+//    public static function isInstalled(): bool
+//    {
+//        return class_exists(AbstractImagine::class);
+//    }
+
+    /**
+     * @param AbstractImagine $imagine
+     */
+    public function __construct(AbstractImagine $imagine)
     {
-        return class_exists(AbstractImagine::class);
+        $this->imagine = $imagine;
     }
 
     public function loadImage(string $realPath): void
     {
-        try {
-            $imagine = new \Imagine\Imagick\Imagine();
-        } catch (Exception $e) {
-            $imagine = new \Imagine\Gd\Imagine();
-        }
-
-        $this->imageObject = $imagine->open($realPath);
+        $this->imageObject = $this->imagine->open($realPath);
     }
 
     public function getImageObject(): ImageInterface
