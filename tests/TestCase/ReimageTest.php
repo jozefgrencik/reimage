@@ -39,7 +39,7 @@ class ReimageTest extends TestCase
 
         $config = (new Config())
             ->setPathMapper($pathMapper)
-            ->setImager(new Imagine(new \Imagine\GD\Imagine()));
+            ->setImager(new Imagine(new \Imagine\Gd\Imagine()));
         return new Reimage($config);
     }
 
