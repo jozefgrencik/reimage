@@ -31,9 +31,9 @@ class Intervention implements ImageInterface
 //        return class_exists(Image::class);
 //    }
 
-    public function loadImage(string $realPath): void
+    public function loadImage(string $binaryData): void
     {
-        $this->imageObject = $this->interventionManager->make($realPath);
+        $this->imageObject = $this->interventionManager->make($binaryData);
     }
 
     public function getImageObject(): Image

@@ -237,8 +237,9 @@ class Reimage
      */
     private function doImageCommands(string $fullPath, array $params): ImageInterface
     {
+        $binaryData = $this->getFileSystemAdapter()->loadContent($fullPath);
         $imageClass = $this->config->getImageAdapter();
-        $imageClass->loadImage($fullPath);
+        $imageClass->loadImage($binaryData);
 
         $width = $params[self::WIDTH] ?? null;
         $height = $params[self::HEIGHT] ?? null;

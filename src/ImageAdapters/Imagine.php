@@ -33,9 +33,9 @@ class Imagine implements ReimageImageInterface
         $this->imagine = $imagine;
     }
 
-    public function loadImage(string $realPath): void
+    public function loadImage(string $binaryData): void
     {
-        $this->imageObject = $this->imagine->open($realPath);
+        $this->imageObject = $this->imagine->load($binaryData);
     }
 
     public function getImageObject(): ImageInterface

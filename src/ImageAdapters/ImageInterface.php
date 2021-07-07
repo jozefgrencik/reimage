@@ -7,7 +7,7 @@ interface ImageInterface
 {
 //    public static function isInstalled(): bool;
 
-    public function loadImage(string $realPath): void;
+    public function loadImage(string $binaryData): void;
 
     /**
      * @return mixed
