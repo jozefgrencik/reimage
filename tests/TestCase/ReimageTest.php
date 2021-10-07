@@ -70,7 +70,7 @@ class ReimageTest extends TestCase
     public function testCreateUrl(): void
     {
         $url = $this->getReimageImagine()->createUrl('/my_originals/iStock_000009041558XLarge.jpg', [Reimage::WIDTH => 300, Reimage::HEIGHT => 200]);
-        $this->assertSame('/my_originals/iStock_000009041558XLarge_6b5016.jpg?w=300&h=200&s=73545fcfc8e7c6ef9c6495695be4bed4', $url);
+        $this->assertSame('/my_originals/iStock_000009041558XLarge_a1AW7q.jpg?w=300&h=200&s=1nDu0d', $url);
     }
 
     public function testCreateImageWrongHash(): void
@@ -140,79 +140,79 @@ class ReimageTest extends TestCase
             'basic_resize' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200],
-                'result_url' => '/cdn/IMG_20190816_142144_b35ccb.jpg?w=300&h=200&s=ca88ef146a1bdda836bfdf24cd16cc0a',
+                'result_url' => '/cdn/IMG_20190816_142144_s1zLEY.jpg?w=300&h=200&s=1rVXM8',
                 'result_image' => TEST_DIR . '/TestExpectations/paper_basic_resize.jpg',
             ],
             'rotate_90' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::ROTATE => 90],
-                'result_url' => '/cdn/IMG_20190816_142144_4569a5.jpg?w=300&h=200&r=90&s=fd698869eb23db8efa808101c1674737',
+                'result_url' => '/cdn/IMG_20190816_142144_RWmlTm.jpg?w=300&h=200&r=90&s=JUESij',
                 'result_image' => TEST_DIR . '/TestExpectations/paper_rotate_90.jpg',
             ],
             'greyscale' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::GREYSCALE => 1],
-                'result_url' => '/cdn/IMG_20190816_142144_2eae4b.jpg?w=300&h=200&grey=1&s=bd016b4c4dfd3913262c24c0d51e505e',
+                'result_url' => '/cdn/IMG_20190816_142144_Lq5LKo.jpg?w=300&h=200&grey=1&s=CWeNQH',
                 'result_image' => TEST_DIR . '/TestExpectations/paper_greyscale.jpg',
             ],
             'blur' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::BLUR => 30],
-                'result_url' => '/cdn/IMG_20190816_142144_00068a.jpg?w=300&h=200&blur=30&s=e4452cac5c6f9924c44bedea5c99b509',
+                'result_url' => '/cdn/IMG_20190816_142144_AAaK9V.jpg?w=300&h=200&blur=30&s=KmnGM1',
                 'result_image' => TEST_DIR . '/TestExpectations/paper_blur.jpg',
             ],
             'negative' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::NEGATIVE => 1],
-                'result_url' => '/cdn/IMG_20190816_142144_8b839f.jpg?w=300&h=200&neg=1&s=ab019f58b41a5bdd091fe2e8aefdf0f8',
+                'result_url' => '/cdn/IMG_20190816_142144_i4OfZo.jpg?w=300&h=200&neg=1&s=bAL1hL',
                 'result_image' => TEST_DIR . '/TestExpectations/paper_negative.jpg',
             ],
             'brightness_plus' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::BRIGHTNESS => 50],
-                'result_url' => '/cdn/IMG_20190816_142144_024039.jpg?w=300&h=200&b=50&s=4b79d9b6188deaa5017d2cfff7d37630',
+                'result_url' => '/cdn/IMG_20190816_142144_AkA5M7.jpg?w=300&h=200&b=50&s=lHlKw3',
                 'result_image' => TEST_DIR . '/TestExpectations/paper_brightness_plus50.jpg',
             ],
             'brightness_minus' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::BRIGHTNESS => -50],
-                'result_url' => '/cdn/IMG_20190816_142144_d238a1.jpg?w=300&h=200&b=-50&s=516f6a2bf4c9dc039e9cf90bd407b705',
+                'result_url' => '/cdn/IMG_20190816_142144_0jiheo.jpg?w=300&h=200&b=-50&s=AvSw7s',
                 'result_image' => TEST_DIR . '/TestExpectations/paper_brightness_minus50.jpg',
             ],
             'flip_v' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::FLIP => 'v'],
-                'result_url' => '/cdn/IMG_20190816_142144_88ac7f.jpg?w=300&h=200&flip=v&s=c32bff062e5e9444c7ca0971c27ed2e4',
+                'result_url' => '/cdn/IMG_20190816_142144_iKx_pK.jpg?w=300&h=200&flip=v&s=XK-Q_F',
                 'result_image' => TEST_DIR . '/TestExpectations/paper_flip_v.jpg',
             ],
             'flip_h' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::FLIP => 'h'],
-                'result_url' => '/cdn/IMG_20190816_142144_afd1a4.jpg?w=300&h=200&flip=h&s=c43d060ab7ef5c7d68a7c1382a967034',
+                'result_url' => '/cdn/IMG_20190816_142144_r9GkGy.jpg?w=300&h=200&flip=h&s=LWoFqh',
                 'result_image' => TEST_DIR . '/TestExpectations/paper_flip_h.jpg',
             ],
             'gamma_07' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::GAMMA => 0.7],
-                'result_url' => '/cdn/IMG_20190816_142144_a41f05.jpg?w=300&h=200&gam=0.7&s=ebc1f4c167c9efab2141d698c9d5e362',
+                'result_url' => '/cdn/IMG_20190816_142144_pB8FxV.jpg?w=300&h=200&gam=0.7&s=nJJoTK',
                 'result_image' => TEST_DIR . '/TestExpectations/paper_gamma_07.jpg',
             ],
             'gamma_23' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::GAMMA => 2.3],
-                'result_url' => '/cdn/IMG_20190816_142144_e84e9d.jpg?w=300&h=200&gam=2.3&s=919e1ca1034c80e059fbaaf30771172a',
+                'result_url' => '/cdn/IMG_20190816_142144_6E6dyA.jpg?w=300&h=200&gam=2.3&s=Td04Cu',
                 'result_image' => TEST_DIR . '/TestExpectations/paper_gamma_23.jpg',
             ],
             'contrast_plus50' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::CONTRAST => 50],
-                'result_url' => '/cdn/IMG_20190816_142144_173eaa.jpg?w=300&h=200&con=50&s=5efad9da919593a0789b72ee7f6d7a61',
+                'result_url' => '/cdn/IMG_20190816_142144_Fz6qo1.jpg?w=300&h=200&con=50&s=c4Z7tO',
                 'result_image' => TEST_DIR . '/TestExpectations/paper_contrast_plus50.jpg',
             ],
             'contrast_minus50' => [
                 'test_image' => TEST_IMG1,
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200, Reimage::CONTRAST => -50],
-                'result_url' => '/cdn/IMG_20190816_142144_2c2032.jpg?w=300&h=200&con=-50&s=c53c9852ebcc45090e55b21dfe59f95a',
+                'result_url' => '/cdn/IMG_20190816_142144_LCAywj.jpg?w=300&h=200&con=-50&s=rfwDwP',
                 'result_image' => TEST_DIR . '/TestExpectations/paper_contrast_minus50.jpg',
             ],
         ];

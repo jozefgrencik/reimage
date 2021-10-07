@@ -51,6 +51,7 @@ class Reimage
     ];
 
     private const HASH_LENGHT = 6;
+    private const SECRET_LENGHT = 6;
     private const CDN_IMAGE_SECRET = '1234';
 
     /** @var Config */
@@ -139,7 +140,7 @@ class Reimage
     private function generateSourcePath(string $publicPath): string
     {
         $ext = pathinfo($publicPath, PATHINFO_EXTENSION);
-        $publicWithoutHash = preg_replace('/_[a-f0-9]{' . self::HASH_LENGHT . '}\.' . preg_quote($ext, '/') . '/', '.' . $ext, $publicPath);
+        $publicWithoutHash = preg_replace('/_[a-zA-Z0-9-_]{' . self::HASH_LENGHT . '}\.' . preg_quote($ext, '/') . '/', '.' . $ext, $publicPath);
         if ($publicWithoutHash === null) {
             throw new ReimageException('preg_replace error occurred');
         }
@@ -170,7 +171,21 @@ class Reimage
         unset($params[self::SIGN]);
         ksort($params);
 
-        return md5(self::CDN_IMAGE_SECRET . '|' . basename($sourcePath) . '|' . http_build_query($params));
+        $stringToHash = self::CDN_IMAGE_SECRET . '|' . basename($sourcePath) . '|' . http_build_query($params);
+        return substr($this->compactHash($stringToHash), 0, self::SECRET_LENGHT);
+    }
+
+    /**
+     * Compact md5() result.
+     * @param string $source
+     * @return string
+     */
+    private function compactHash(string $source): string
+    {
+        $hash = md5($source);
+        /** @var string $string */
+        $string = hex2bin($hash);
+        return str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($string));
     }
 
     /**
@@ -184,7 +199,7 @@ class Reimage
         ksort($params);
 
         $stringToHash = basename($path) . http_build_query($params);
-        return substr(md5($stringToHash), 0, self::HASH_LENGHT);
+        return substr($this->compactHash($stringToHash), 0, self::HASH_LENGHT);
     }
 
     /**
