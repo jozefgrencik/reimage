@@ -1,5 +1,5 @@
 {
-    "name": "jozefgrencik/reimage",
+    "name": "reimage/reimage",
     "type": "library",
     "version": "0.1",
     "description": "Create modified images from original image on the fly",
