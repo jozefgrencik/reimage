@@ -4,17 +4,18 @@ declare(strict_types=1);
 namespace Reimage;
 
 use Imagine\Image\AbstractImagine;
+use Imagine\Image\ImagineInterface;
 use Intervention\Image\ImageManager;
 use Reimage\Exceptions\ReimageException;
-use Reimage\ImageAdapters\ImageInterface;
-use Reimage\ImageAdapters\Imagine;
-use Reimage\ImageAdapters\Intervention;
+use Reimage\ImageProcessorAdapters\ImageProcessorInterface;
+use Reimage\ImageProcessorAdapters\Imagine;
+use Reimage\ImageProcessorAdapters\Intervention;
 use Reimage\PathMapperAdapters\PathMapperInterface;
 
 class Config
 {
-    /** @var ImageInterface|null */
-    private $imageAdapter;
+    /** @var ImageProcessorInterface|null Image processor adapter */
+    private $imageProcessor;
 
     /** @var PathMapperInterface|null */
     private $pathMapperAdapter;
@@ -22,6 +23,7 @@ class Config
     /**
      * Config constructor.
      * @param array<string, mixed> $config
+     * @throws ReimageException
      */
     public function __construct(array $config = null)
     {
@@ -30,7 +32,7 @@ class Config
                 $this->setPathMapper($config['path_mapper']);
             }
             if (array_key_exists('image_adapter', $config)) {
-                $this->setImager($config['image_adapter']);
+                $this->setImageProcessor($config['image_adapter']);
             }
         }
     }
@@ -55,30 +57,31 @@ class Config
     }
 
     /**
+     * Get Image processor. If it is not defined, we will guess.
      * @throws ReimageException
      */
-    public function getImageAdapter(): ImageInterface
+    public function getImageProcessor(): ImageProcessorInterface
     {
-        if ($this->imageAdapter) {
-            return $this->imageAdapter;
+        if ($this->imageProcessor) {
+            return $this->imageProcessor;
         }
 
         // we will guess
         if (class_exists(ImageManager::class)) {
             if ($this->isImagickEnabled()) {
-                $this->imageAdapter = new Intervention(new ImageManager(['driver' => 'imagick']));
+                $this->imageProcessor = new Intervention(new ImageManager(['driver' => 'imagick']));
             } elseif ($this->isGdEnabled()) {
-                $this->imageAdapter = new Intervention(new ImageManager(['driver' => 'gd']));
+                $this->imageProcessor = new Intervention(new ImageManager(['driver' => 'gd']));
             }
         }
 
-        if ($this->imageAdapter === null && class_exists(AbstractImagine::class)) {
+        if ($this->imageProcessor === null && class_exists(AbstractImagine::class)) {
             if ($this->isImagickEnabled()) {
-                $this->imageAdapter = new Imagine(new \Imagine\Imagick\Imagine());
+                $this->imageProcessor = new Imagine(new \Imagine\Imagick\Imagine());
             } elseif ($this->isGdEnabled()) {
-                $this->imageAdapter = new Imagine(new \Imagine\Gd\Imagine());
+                $this->imageProcessor = new Imagine(new \Imagine\Gd\Imagine());
             } elseif ($this->isGmagickEnabled()) {
-                $this->imageAdapter = new Imagine(new \Imagine\Gmagick\Imagine());
+                $this->imageProcessor = new Imagine(new \Imagine\Gmagick\Imagine());
             }
         }
 
@@ -86,19 +89,21 @@ class Config
     }
 
     /**
-     * @param ImageInterface|ImageManager $imageAdapter
+     * Set Image procesor instance.
+     * @param ImageProcessorInterface|ImageManager|ImagineInterface $imageAdapter
      * @return $this
      * @throws ReimageException
      */
-    public function setImager($imageAdapter): self
+    public function setImageProcessor($imageAdapter): self
     {
-        if ($imageAdapter instanceof ImageInterface) {
-            $this->imageAdapter = $imageAdapter;
+        if ($imageAdapter instanceof ImageProcessorInterface) {
+            $this->imageProcessor = $imageAdapter;
         } elseif ($imageAdapter instanceof ImageManager) {
-            $this->imageAdapter = new Intervention($imageAdapter);
+            $this->imageProcessor = new Intervention($imageAdapter);
+        } elseif ($imageAdapter instanceof ImagineInterface) {
+            $this->imageProcessor = new Imagine($imageAdapter);
         } else {
-            //todo imagine
-            throw new ReimageException('Unsupported Imager');
+            throw new ReimageException('Unsupported Image processor library');
         }
 
         return $this;

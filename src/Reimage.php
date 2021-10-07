@@ -6,7 +6,7 @@ namespace Reimage;
 use Reimage\Exceptions\ReimageException;
 use Reimage\FileSystemAdapters\FileSystemInterface;
 use Reimage\FileSystemAdapters\Local;
-use Reimage\ImageAdapters\ImageInterface;
+use Reimage\ImageProcessorAdapters\ImageProcessorInterface;
 
 class Reimage
 {
@@ -60,6 +60,7 @@ class Reimage
     /**
      * Reimage constructor.
      * @param Config|array<string,mixed>|null $config
+     * @throws ReimageException
      */
     public function __construct($config = null)
     {
@@ -247,13 +248,13 @@ class Reimage
     /**
      * @param string $fullPath
      * @param array<string,string> $params
-     * @return ImageInterface
+     * @return ImageProcessorInterface
      * @throws ReimageException
      */
-    private function doImageCommands(string $fullPath, array $params): ImageInterface
+    private function doImageCommands(string $fullPath, array $params): ImageProcessorInterface
     {
         $binaryData = $this->getFileSystemAdapter()->loadContent($fullPath);
-        $imageClass = $this->config->getImageAdapter();
+        $imageClass = $this->config->getImageProcessor();
         $imageClass->loadImage($binaryData);
 
         $width = $params[self::WIDTH] ?? null;

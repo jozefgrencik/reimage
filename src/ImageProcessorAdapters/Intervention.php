@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Reimage\ImageAdapters;
+namespace Reimage\ImageProcessorAdapters;
 
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
@@ -10,7 +10,7 @@ use Reimage\Exceptions\ReimageException;
 /**
  * @link http://image.intervention.io/
  */
-class Intervention implements ImageInterface
+class Intervention implements ImageProcessorInterface
 {
     /** @var Image */
     private $imageObject;

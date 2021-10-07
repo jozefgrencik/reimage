@@ -1,23 +1,22 @@
 <?php
 declare(strict_types=1);
 
-namespace Reimage\ImageAdapters;
+namespace Reimage\ImageProcessorAdapters;
 
 use Imagine\Image\Box;
+use Imagine\Image\ImagineInterface;
 use Reimage\Exceptions\ReimageException;
-use Reimage\ImageAdapters\ImageInterface as ReimageImageInterface;
-use Imagine\Image\AbstractImagine;
 use Imagine\Image\ImageInterface;
 
 /**
  * @link https://imagine.readthedocs.io/
  */
-class Imagine implements ReimageImageInterface
+class Imagine implements ImageProcessorInterface
 {
     /** @var ImageInterface */
     private $imageObject;
 
-    /** @var AbstractImagine */
+    /** @var ImagineInterface */
     private $imagine;
 
 //    public static function isInstalled(): bool
@@ -26,9 +25,9 @@ class Imagine implements ReimageImageInterface
 //    }
 
     /**
-     * @param AbstractImagine $imagine
+     * @param ImagineInterface $imagine
      */
-    public function __construct(AbstractImagine $imagine)
+    public function __construct(ImagineInterface $imagine)
     {
         $this->imagine = $imagine;
     }

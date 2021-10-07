@@ -7,8 +7,8 @@ use Intervention\Image\ImageManager;
 use PHPUnit\Framework\TestCase;
 use Reimage\Config;
 use Reimage\Exceptions\ReimageException;
-use Reimage\ImageAdapters\Imagine;
-use Reimage\ImageAdapters\Intervention;
+use Reimage\ImageProcessorAdapters\Imagine;
+use Reimage\ImageProcessorAdapters\Intervention;
 use Reimage\PathMapperAdapters\BasicMapper;
 use Reimage\Reimage;
 use Reimage\Test\ImageUtils;
@@ -39,7 +39,7 @@ class ReimageTest extends TestCase
 
         $config = (new Config())
             ->setPathMapper($pathMapper)
-            ->setImager(new Imagine(new \Imagine\Gd\Imagine()));
+            ->setImageProcessor(new Imagine(new \Imagine\Gd\Imagine()));
         return new Reimage($config);
     }
 
@@ -55,7 +55,7 @@ class ReimageTest extends TestCase
 
         $config = (new Config())
             ->setPathMapper($pathMapper)
-            ->setImager(new Intervention(new ImageManager(['driver' => 'gd'])));
+            ->setImageProcessor(new Intervention(new ImageManager(['driver' => 'gd'])));
         return new Reimage($config);
     }
 

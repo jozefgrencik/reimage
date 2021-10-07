@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Reimage\ImageAdapters;
+namespace Reimage\ImageProcessorAdapters;
 
-interface ImageInterface
+interface ImageProcessorInterface
 {
 //    public static function isInstalled(): bool;
 
