@@ -1,7 +1,9 @@
 # Reimage documentation
 
 ## Basics
-Requirements
-Installation
+ - Requirements
+ - Installation
+
+## Configuration
 
 ## Examples

@@ -22,7 +22,7 @@ The Reimage library has the following requirements:
 
 ## Optional libraries
 File system libraries:
-- [league/flysystem](https://flysystem.thephpleague.com/) v2.0+ (AWS S3, FTP, SFTP, in memory)
+ - [league/flysystem](https://flysystem.thephpleague.com/) v2.0+ (AWS S3, FTP, SFTP, in memory)
 
 ## Basic usage
 <!--- \Reimage\Test\TestCase\Docs\HomepageTest::testSimplestUsage -->
@@ -34,3 +34,6 @@ $url = $reimage->createUrl('/my_image.jpg', [Reimage::WIDTH => 300, Reimage::HEI
 
 ## Documentations
 Read the [documentation](/docs/index.md) for more information.
+
+## Licence
+See the [LICENSE](/LICENSE) file.
