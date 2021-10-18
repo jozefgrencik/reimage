@@ -1,5 +1,7 @@
-# Reimage
-Create modified images from original image on the fly
+![Reimage logo](docs/images/logo.png)
+
+# About Reimage
+Create modified images from original image on the fly.
 
 **Currently work in progress**
 
