@@ -27,5 +27,7 @@ File system libraries:
 ## Basic usage
 <!--- \Reimage\Test\TestCase\Docs\HomepageTest::testSimplestUsage -->
 ```php
-//todo
+$reimage = new Reimage();
+$url = $reimage->createUrl('/my_image.jpg', [Reimage::WIDTH => 300, Reimage::HEIGHT => 200]);
+//Result: $url = '/my_image_fpA63N.jpg?w=300&h=200&s=4L1CZi'
 ```

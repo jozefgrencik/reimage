@@ -7,6 +7,7 @@ use Reimage\Exceptions\ReimageException;
 use Reimage\FileSystemAdapters\FileSystemInterface;
 use Reimage\FileSystemAdapters\Local;
 use Reimage\ImageProcessorAdapters\ImageProcessorInterface;
+use Reimage\PathMapperAdapters\BasicMapper;
 
 class Reimage
 {
@@ -73,7 +74,6 @@ class Reimage
         }
     }
 
-
     /**
      * @param string $sourcePath
      * @param array<string,string|int> $rawParams
@@ -120,7 +120,12 @@ class Reimage
      */
     private function generatePublicPath(string $sourcePath, array $params): string
     {
-        $mapper = $this->config->getPathMapper();
+        try {
+            $mapper = $this->config->getPathMapper();
+        } catch (ReimageException $exception) {
+            $this->config->setPathMapper(new BasicMapper([]));
+            $mapper = $this->config->getPathMapper();
+        }
         $publicPath = $mapper->remapSourceToPublic($sourcePath);
 
         $hashedPart = $this->generateFileHash($sourcePath, $params);

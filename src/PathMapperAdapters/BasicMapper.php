@@ -25,7 +25,7 @@ class BasicMapper implements PathMapperInterface
         $this->options = array_map(function (array $option) {
             return [
                 'source' => Utils::unifyPath($option['source'] ?? ''),
-                'cache' => Utils::unifyPath($option['cache'] ?? ''),
+                'cache' => Utils::unifyPath($option['cache'] ?? Utils::unifyPath($option['source']) ?? ''),
                 'public' => Utils::unifyPath($option['public'] ?? ''),
                 'filesystem' => new Local(),
             ];
