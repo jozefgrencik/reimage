@@ -32,7 +32,7 @@ $url = $reimage->createUrl('/my_image.jpg', [Reimage::WIDTH => 300, Reimage::HEI
 //Result: $url = '/my_image_fpA63N.jpg?w=300&h=200&s=4L1CZi'
 ```
 
-## Documentations
+## Documentation
 Read the [documentation](/docs/index.md) for more information.
 
 ## Licence
