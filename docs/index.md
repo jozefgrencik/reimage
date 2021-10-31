@@ -3,6 +3,7 @@
 ## Basics
  - [Requirements](/docs/requirements.md)
  - [Installation](/docs/installation.md)
+ - [Changelog](/docs/changelog.md)
 
 ## Configuration
  - x
