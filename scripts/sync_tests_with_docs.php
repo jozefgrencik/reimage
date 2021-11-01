@@ -34,7 +34,7 @@ function syncTestWithDoc(string $docFilePath): void
                 throw new Exception('Test file ' . $testFile . ' cannot be read');
             }
             $function = $matches['fn'][$index];
-            $regex = '~ function ' . $function . '.*//public start\n(?<spaces> +)(?<example>.+)//public end~s';
+            $regex = '~ function ' . $function . '.*//public start\n(?<example>.+)(?<spaces> +)//public end~Us';
             if (preg_match($regex, $testContent, $matches2)) {
                 // remove spaces from beginning of every line
                 $example = (string)preg_replace('~^' . $matches2['spaces'] . '~m', '', $matches2['example']);
