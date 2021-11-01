@@ -25,7 +25,7 @@ function syncTestWithDoc(string $docFilePath): void
     global $testFolder;
 
     $content = (string)file_get_contents($docFilePath);
-    $regex = '~(?<comment><\!\-\-\- (?<test>[a-zA-Z\\\\]+)::(?<fn>[a-zA-Z0-9]+) \-\->\n)```php[^`]+```~s';
+    $regex = '~(?<comment><\!\-\- (?<test>[a-zA-Z\\\\]+)::(?<fn>[a-zA-Z0-9]+) \-\->\n)```php[^`]+```~s';
     if (preg_match_all($regex, $content, $matches)) {
         foreach ($matches[0] as $index => $match) {
             $testFile = $testFolder . str_replace('\\Reimage\\Test', '', $matches['test'][$index]) . '.php';

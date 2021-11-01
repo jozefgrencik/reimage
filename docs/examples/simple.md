@@ -1,7 +1,7 @@
 # Simple examples
 
 ## Create url for image with defined size
-<!--- @see \Reimage\Test\TestCase\Docs\ExamplesTest::testSimplestUsage() -->
+<!-- @see \Reimage\Test\TestCase\Docs\ExamplesTest::testSimplestUsage() -->
 ```php
 $reimage = new Reimage();
 $url = $reimage->createUrl('/my_image.jpg', [Reimage::WIDTH => 200, Reimage::HEIGHT => 150, Reimage::GREYSCALE => 1]);
@@ -9,7 +9,7 @@ $url = $reimage->createUrl('/my_image.jpg', [Reimage::WIDTH => 200, Reimage::HEI
 ```
 
 ## Create url for image with defined size in grayscale
-<!--- \Reimage\Test\TestCase\Docs\ExamplesTest::testSimpleGreyscale -->
+<!-- \Reimage\Test\TestCase\Docs\ExamplesTest::testSimpleGreyscale -->
 ```php
 $reimage = new Reimage();
 $url = $reimage->createUrl('/my_image.jpg', [Reimage::WIDTH => 200, Reimage::HEIGHT => 150, Reimage::GREYSCALE => 1]);

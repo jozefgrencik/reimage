@@ -25,7 +25,7 @@ File system libraries:
  - [league/flysystem](https://flysystem.thephpleague.com/) v2.0+ (AWS S3, FTP, SFTP, in memory)
 
 ## Basic usage
-<!--- \Reimage\Test\TestCase\Docs\HomepageTest::testSimplestUsage -->
+<!-- \Reimage\Test\TestCase\Docs\HomepageTest::testSimplestUsage -->
 ```php
 $reimage = new Reimage();
 $url = $reimage->createUrl('/my_image.jpg', [Reimage::WIDTH => 300, Reimage::HEIGHT => 200]);
