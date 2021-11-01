@@ -10,6 +10,7 @@
 
 ## Features
  - [Overview](/docs/features/index.md)
+ - [Size](/docs/features/size.md)
  -
 
 ## Examples
