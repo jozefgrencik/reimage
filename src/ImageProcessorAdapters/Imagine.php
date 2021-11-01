@@ -49,11 +49,23 @@ class Imagine implements ImageProcessorInterface
 
     public function resize(?int $width = null, ?int $height = null): void
     {
-        if ($width === null || $height === null) {
-            throw new ReimageException('Currently unsupported'); //todo fix
+        if ($width === null && $height === null) {
+            throw new ReimageException('Width and height cannot be empty');
+        } elseif ($width !== null && $height !== null) {
+            $this->imageObject = $this->imageObject->thumbnail(new Box($width, $height), $this->imageObject::THUMBNAIL_OUTBOUND);
+        } elseif ($width !== null) {
+            $imageSize = $this->imageObject->getSize();
+            $ratio = $width / $imageSize->getWidth();
+            $thumbnailSize = $imageSize->scale($ratio);
+            $this->imageObject->resize($thumbnailSize);
+        } elseif ($height !== null) {
+            $imageSize = $this->imageObject->getSize();
+            $ratio = $height / $imageSize->getHeight();
+            $thumbnailSize = $imageSize->scale($ratio);
+            $this->imageObject->resize($thumbnailSize);
         }
-//        $this->imageObject->resize(new Box($width, $height));
-        $this->imageObject = $this->imageObject->thumbnail(new Box($width, $height), $this->imageObject::THUMBNAIL_OUTBOUND);
+
+        //todo ImageInterface::THUMBNAIL_FLAG_NOCLONE ??
     }
 
     public function rotate(float $angle): void

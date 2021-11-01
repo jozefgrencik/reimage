@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Reimage\ImageProcessorAdapters;
 
+use Intervention\Image\Constraint;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
 use Reimage\Exceptions\ReimageException;
@@ -46,17 +47,24 @@ class Intervention implements ImageProcessorInterface
         return $this->imageObject->stream()->getContents();
     }
 
+    /**
+     * @param int|null $width
+     * @param int|null $height
+     * @throws ReimageException
+     * @link http://image.intervention.io/api/resize
+     * @link http://image.intervention.io/api/fit
+     */
     public function resize(?int $width = null, ?int $height = null): void
     {
-        if ($width === null || $height === null) {
-            throw new ReimageException('Currently unsupported'); //todo fix
+        if ($width === null && $height === null) {
+            throw new ReimageException('Width and height cannot be empty');
+        } elseif ($width === null || $height === null) {
+            $this->imageObject->resize($width, $height, function (Constraint $constraint) {
+                $constraint->aspectRatio();
+            });
+        } else {
+            $this->imageObject->fit($width, $height);
         }
-
-        $this->imageObject->fit($width, $height);
-
-//        $this->imageObject->resize($width, $height, function (Constraint $constraint) {
-//            $constraint->aspectRatio();
-//        });
     }
 
     public function rotate(float $angle): void

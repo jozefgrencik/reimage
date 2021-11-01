@@ -119,7 +119,7 @@ class ReimageTest extends TestCase
             //create visual comparison results
             if (!$areIdentical) {
                 $uniqName = str_replace(' ', '_', strtolower($this->getName() . '-' . $instanceName));
-                $prefix = preg_replace('[^a-z0-9_-]', '', $uniqName);
+                $prefix = preg_replace('~[^a-z0-9_-]~', '', $uniqName);
                 copy($cachePath, TEST_DIR . '/TestResults/' . $prefix . '_result.jpg');
                 copy($expectedImage, TEST_DIR . '/TestResults/' . $prefix . '_expected.jpg');
                 ImageUtils::createVisualComparison($cachePath, $expectedImage, TEST_DIR . '/TestResults/' . $prefix . '_diff.jpg');
@@ -142,6 +142,18 @@ class ReimageTest extends TestCase
                 'create_options' => [Reimage::WIDTH => 300, Reimage::HEIGHT => 200],
                 'result_url' => '/cdn/IMG_20190816_142144_s1zLEY.jpg?w=300&h=200&s=1rVXM8',
                 'result_image' => TEST_DIR . '/TestExpectations/paper_basic_resize.jpg',
+            ],
+            'width_px' => [
+                'test_image' => TEST_IMG1,
+                'create_options' => [Reimage::WIDTH => 300],
+                'result_url' => '/cdn/IMG_20190816_142144_LbKrLo.jpg?w=300&s=z_wlP2',
+                'result_image' => TEST_DIR . '/TestExpectations/paper_width_px.jpg',
+            ],
+            'height_px' => [
+                'test_image' => TEST_IMG1,
+                'create_options' => [Reimage::HEIGHT => 200],
+                'result_url' => '/cdn/IMG_20190816_142144_JuCsS7.jpg?h=200&s=WnuDsJ',
+                'result_image' => TEST_DIR . '/TestExpectations/paper_height_px.jpg',
             ],
             'rotate_90' => [
                 'test_image' => TEST_IMG1,
