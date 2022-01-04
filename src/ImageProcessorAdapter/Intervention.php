@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Reimage\ImageProcessorAdapters;
+namespace Reimage\ImageProcessorAdapter;
 
 use Intervention\Image\Constraint;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
-use Reimage\Exceptions\ReimageException;
+use Reimage\Exception\ReimageException;
 
 /**
  * @link http://image.intervention.io/

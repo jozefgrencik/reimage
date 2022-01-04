@@ -28,18 +28,18 @@ class ImageUtilsTest extends TestCase
     {
         return [
             'same_bites' => [
-                TEST_DIR . '/TestExpectations/paper_blur_30.jpg',
-                TEST_DIR . '/TestExpectations/paper_blur_30.jpg',
+                TEST_DIR . '/TestExpectation/paper_blur_30.jpg',
+                TEST_DIR . '/TestExpectation/paper_blur_30.jpg',
                 0,
             ],
             'same_image_different_jpg_encoder' => [
-                TEST_DIR . '/TestExpectations/paper_gd_jpg80.jpg',
-                TEST_DIR . '/TestExpectations/paper_gd_jpg90.jpg',
+                TEST_DIR . '/TestExpectation/paper_gd_jpg80.jpg',
+                TEST_DIR . '/TestExpectation/paper_gd_jpg90.jpg',
                 0.00009,
             ],
             'different' => [
-                TEST_DIR . '/TestExpectations/paper_blur_10.jpg',
-                TEST_DIR . '/TestExpectations/paper_blur_30.jpg',
+                TEST_DIR . '/TestExpectation/paper_blur_10.jpg',
+                TEST_DIR . '/TestExpectation/paper_blur_30.jpg',
                 0.00226
             ],
         ];
@@ -64,18 +64,18 @@ class ImageUtilsTest extends TestCase
     {
         return [
             'same_bites' => [
-                TEST_DIR . '/TestExpectations/paper_blur_30.jpg',
-                TEST_DIR . '/TestExpectations/paper_blur_30.jpg',
+                TEST_DIR . '/TestExpectation/paper_blur_30.jpg',
+                TEST_DIR . '/TestExpectation/paper_blur_30.jpg',
                 true,
             ],
             'same_image_different_jpg_encoder' => [
-                TEST_DIR . '/TestExpectations/paper_gd_jpg80.jpg',
-                TEST_DIR . '/TestExpectations/paper_gd_jpg90.jpg',
+                TEST_DIR . '/TestExpectation/paper_gd_jpg80.jpg',
+                TEST_DIR . '/TestExpectation/paper_gd_jpg90.jpg',
                 true,
             ],
             'different' => [
-                TEST_DIR . '/TestExpectations/paper_blur_10.jpg',
-                TEST_DIR . '/TestExpectations/paper_blur_30.jpg',
+                TEST_DIR . '/TestExpectation/paper_blur_10.jpg',
+                TEST_DIR . '/TestExpectation/paper_blur_30.jpg',
                 false,
             ],
         ];
@@ -83,8 +83,8 @@ class ImageUtilsTest extends TestCase
 
     public function testCreateVisualComparison(): void
     {
-        $img1 = TEST_DIR . '/TestExpectations/paper_blur_10.jpg';
-        $img2 = TEST_DIR . '/TestExpectations/paper_blur_30.jpg';
+        $img1 = TEST_DIR . '/TestExpectation/paper_blur_10.jpg';
+        $img2 = TEST_DIR . '/TestExpectation/paper_blur_30.jpg';
         $output = TEST_DIR . '/Temp/diff_1.jpg';
 
         ImageUtils::createVisualComparison($img1, $img2, $output);

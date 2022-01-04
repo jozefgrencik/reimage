@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Reimage\FileSystemAdapters;
+namespace Reimage\FileSystemAdapter;
 
-use Reimage\Exceptions\ReimageException;
+use Reimage\Exception\ReimageException;
 
 class Local implements FileSystemInterface
 {

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Reimage;
 
-use Reimage\Exceptions\ReimageException;
+use Reimage\Exception\ReimageException;
 
 class Utils
 {

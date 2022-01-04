@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Reimage\PathMapperAdapters;
+namespace Reimage\PathMapperAdapter;
 
 interface PathMapperInterface
 {

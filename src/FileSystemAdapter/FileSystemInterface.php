@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Reimage\FileSystemAdapters;
+namespace Reimage\FileSystemAdapter;
 
 interface FileSystemInterface
 {

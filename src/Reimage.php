@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Reimage;
 
-use Reimage\Exceptions\ReimageException;
-use Reimage\FileSystemAdapters\FileSystemInterface;
-use Reimage\FileSystemAdapters\Local;
-use Reimage\ImageProcessorAdapters\ImageProcessorInterface;
-use Reimage\PathMapperAdapters\BasicMapper;
+use Reimage\Exception\ReimageException;
+use Reimage\FileSystemAdapter\FileSystemInterface;
+use Reimage\FileSystemAdapter\Local;
+use Reimage\ImageProcessorAdapter\ImageProcessorInterface;
+use Reimage\PathMapperAdapter\BasicMapper;
 
 class Reimage
 {

@@ -6,11 +6,11 @@ namespace Reimage;
 use Imagine\Image\AbstractImagine;
 use Imagine\Image\ImagineInterface;
 use Intervention\Image\ImageManager;
-use Reimage\Exceptions\ReimageException;
-use Reimage\ImageProcessorAdapters\ImageProcessorInterface;
-use Reimage\ImageProcessorAdapters\Imagine;
-use Reimage\ImageProcessorAdapters\Intervention;
-use Reimage\PathMapperAdapters\PathMapperInterface;
+use Reimage\Exception\ReimageException;
+use Reimage\ImageProcessorAdapter\ImageProcessorInterface;
+use Reimage\ImageProcessorAdapter\Imagine;
+use Reimage\ImageProcessorAdapter\Intervention;
+use Reimage\PathMapperAdapter\PathMapperInterface;
 
 class Config
 {

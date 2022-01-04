@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Reimage\PathMapperAdapters;
+namespace Reimage\PathMapperAdapter;
 
-use Reimage\FileSystemAdapters\Local;
+use Reimage\FileSystemAdapter\Local;
 use Reimage\Utils;
 
 class BasicMapper implements PathMapperInterface

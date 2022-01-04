@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Reimage\ImageProcessorAdapters;
+namespace Reimage\ImageProcessorAdapter;
 
 use Imagine\Image\Box;
 use Imagine\Image\ImagineInterface;
-use Reimage\Exceptions\ReimageException;
+use Reimage\Exception\ReimageException;
 use Imagine\Image\ImageInterface;
 
 /**

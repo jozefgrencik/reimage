@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Reimage\ImageProcessorAdapters;
+namespace Reimage\ImageProcessorAdapter;
 
 interface ImageProcessorInterface
 {

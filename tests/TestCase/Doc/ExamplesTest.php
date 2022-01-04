@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Reimage\Test\TestCase\Docs;
+namespace Reimage\Test\TestCase\Doc;
 
 use PHPUnit\Framework\TestCase;
 use Reimage\Reimage;
